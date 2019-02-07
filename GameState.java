@@ -12,7 +12,7 @@ public class GameState {
     
     /**
      * Constructs a new game state if necessary  
-    */
+     */
     private GameState() {
         // Initialization here
     }

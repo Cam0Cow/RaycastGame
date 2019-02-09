@@ -1,5 +1,5 @@
 build:
-	javac *.java
+	javac src/*.java -d bin/
 
 clean:
-	-rm *.class
+	-rm bin/*.class

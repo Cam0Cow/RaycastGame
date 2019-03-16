@@ -1,6 +1,6 @@
-#Raycast Game
+# Raycast Game
 
-##Overview
+## Overview
 
 * This repository contains the code for a game inspired by Wolfenstein 3D, using very similar rendering technology.
 * This is a school project: the code will be suboptimal and at times even wrong.

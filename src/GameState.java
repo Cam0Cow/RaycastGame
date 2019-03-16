@@ -8,17 +8,32 @@ public class GameState {
     // This will contain the screen data, enemies, stats, etc.
     // It will be updated as new features are added
     
-    private static GameState state;
+    
+    private Player player;
+    private LevelMap levelMap;
     
     /**
      * Constructs a new game state if necessary  
      */
-    private GameState() {
-        // Initialization here
+    public GameState() {
+        player = new Player();
     }
     
-    public static GameState getGameState() {
-        if (state == null) state = new GameState();
-        return state;
+    public Player getPlayer() {
+        return player;
     }
+    
+    public void setPlayer(Player p) {
+        player = p;
+    }
+    
+    public LevelMap getLevelMap() {
+        return levelMap;
+    }
+    
+    public void setLevelMap(LevelMap lm) {
+        levelMap = lm;
+    }
+    
+    
 }

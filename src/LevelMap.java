@@ -57,4 +57,12 @@ public class LevelMap {
     public int getHeight() {
         return height;
     }
+    
+    /**
+     * Returns the map array
+     * @return the map array   
+     */
+    public MapTile[][] getMap() {
+        return map;
+    }
 }

@@ -15,8 +15,10 @@ public class Renderer {
     
     public void render(GameState game) {
         Graphics2D g = surface.createGraphics();
-        g.setColor(Color.BLACK);
-        g.clearRect(0,0,width,height);
+        g.setBackground(Color.BLUE.brighter());
+        g.clearRect(0,0,width,height/2);
+        g.setBackground(Color.GRAY);
+        g.clearRect(0,height/2,width,height/2);
         Player p = game.getPlayer();
         MapTile[][] mt = game.getLevelMap().getMap();
         
@@ -78,7 +80,7 @@ public class Renderer {
             }
             
             int lineHeight = (int) (height / perpWallDist);
-            System.out.println(x + ": " + perpWallDist);
+            // System.out.println(x + ": " + perpWallDist);
             if (lineHeight > height) lineHeight = height;
             if (lineHeight < 0) lineHeight = 0;
             int start = (height - lineHeight) / 2;

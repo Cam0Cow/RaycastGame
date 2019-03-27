@@ -5,6 +5,7 @@ public class Renderer {
     
     private BufferedImage surface;
     private int width, height;
+    public static final double FOV = 0.66;
     
     public Renderer(int w, int h) {
         width = w;
@@ -23,8 +24,8 @@ public class Renderer {
         double posY = p.getPosY();
         double dirX = p.getDirX();
         double dirY = p.getDirY();
-        double planeX = 0.66;
-        double planeY = 0;
+        double planeX = -dirY*FOV;
+        double planeY = dirX*FOV;
         
         for (int x=0; x<width; x++) {
             double cameraX = 2 * x / ((double)width) - 1;
@@ -82,12 +83,18 @@ public class Renderer {
             if (lineHeight < 0) lineHeight = 0;
             int start = (height - lineHeight) / 2;
             int end = start + lineHeight;
-            g.setColor(Color.GREEN);
+            Color c = Color.GREEN; // set color here
+            if (!side) c = c.darker();
+            g.setColor(c);
             g.drawLine(x,start,x,end);
         }
     }
     
     public BufferedImage getSurface() {
         return surface;
+    }
+    
+    public Dimension getSize() {
+        return new Dimension(width, height);
     }
 }

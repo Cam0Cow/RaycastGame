@@ -14,6 +14,10 @@ public class Player {
         this.posY = posY;
         this.dirX = dirX;
         this.dirY = dirY;
+        
+        double mag = Math.sqrt(dirX*dirX+dirY*dirY);
+        dirX /= mag;
+        dirY /= mag;
     }
     
     public double getPosX() {
@@ -30,5 +34,21 @@ public class Player {
     
     public double getDirY() {
         return dirY;
+    }
+    
+    public void setPosX(double x) {
+    	posX = x;
+    }
+    
+    public void setPosY(double y) {
+    	posY = y;
+    }
+    
+    public void setDirX(double x) {
+    	dirX = x;
+    }
+    
+    public void setDirY(double y) {
+    	dirY = y;
     }
 }

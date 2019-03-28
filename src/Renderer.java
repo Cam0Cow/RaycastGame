@@ -73,10 +73,10 @@ public class Renderer {
             
             if (side) {
                 perpWallDist = (mapY - posY + (1 - stepY) / 2) / rayDirY;
-                if (x == 0) System.out.printf("%d %f %d %f%n",mapY,posY,stepY,rayDirY);
+                //if (x == 0) System.out.printf("%d %f %d %f%n",mapY,posY,stepY,rayDirY);
             } else {
                 perpWallDist = (mapX - posX + (1 - stepX) / 2) / rayDirX;
-                if (x == 0) System.out.printf("%d %f %d %f%n",mapX,posX,stepX,rayDirX);
+                //if (x == 0) System.out.printf("%d %f %d %f%n",mapX,posX,stepX,rayDirX);
             }
             
             int lineHeight = (int) (height / perpWallDist);

@@ -10,6 +10,8 @@ public class LevelMap {
     private String name;
     private int width;
     private int height;
+    private int locX;
+    private int locY;
     
     /**
      * Loads a map from disk
@@ -22,10 +24,13 @@ public class LevelMap {
             name = sc.nextLine();
             width = sc.nextInt();
             height = sc.nextInt();
+            locX = sc.nextInt();
+            locY = sc.nextInt();
             map = new MapTile[height][width];
             for (int i=0; i<height; i++) {
                 for (int j=0; j<width; j++) {
-                    map[i][j] = MapTile.fromInt(sc.nextInt());
+                    map[i][j] = MapTile.fromInt(
+                    	translate(sc.findWithinHorizon(".",0).charAt(0)));
                 }
             }
             
@@ -64,5 +69,25 @@ public class LevelMap {
      */
     public MapTile[][] getMap() {
         return map;
+    }
+    
+    private int translate(char c) {
+    	if (Character.isDigit(c)) {
+    		return c - '0';
+    	} else if (Character.isLowerCase(c)) {
+    		return c - 'a' + 10;
+    	} else if (Character.isUpperCase(c)) {
+    		return c - 'A' + 36;
+    	} else {
+    		return 0;
+    	}
+    }
+    
+    public int getLocX() {
+    	return locX;
+    }
+    
+    public int getLocY() {
+    	return locY;
     }
 }

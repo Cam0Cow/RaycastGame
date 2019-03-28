@@ -11,12 +11,14 @@ public class GameState {
     
     private Player player;
     private LevelMap levelMap;
+    private KeyState keyState;
     
     /**
      * Constructs a new game state if necessary  
      */
     public GameState() {
         player = new Player();
+        keyState = KeyState.getKeyState();
     }
     
     public Player getPlayer() {
@@ -34,6 +36,4 @@ public class GameState {
     public void setLevelMap(LevelMap lm) {
         levelMap = lm;
     }
-    
-    
 }

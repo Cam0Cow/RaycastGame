@@ -3,31 +3,31 @@ import java.awt.event.*;
 import java.awt.*;
 
 public class KeyState implements KeyListener {
-    
-    private HashMap<Integer, Boolean> keysDown;
+
+    private HashSet<Integer> keysDown;
     private static KeyState ref;
-    
+
     private KeyState() {
-        keysDown = new HashMap<Integer, Boolean>();
+        keysDown = new HashSet<Integer>();
         ref = this;
     }
-    
+
     public static KeyState getKeyState() {
         if (ref == null) ref = new KeyState();
         return ref;
     }
-    
+
     public boolean isDown(Integer key) {
-        return keysDown.getOrDefault(key, false);
+        return keysDown.contains(key);
     }
-    
+
     public void keyPressed(KeyEvent e) {
-        keysDown.put(e.getKeyCode(), true);
+        keysDown.add(e.getKeyCode());
     }
-    
+
     public void keyReleased(KeyEvent e) {
-        keysDown.put(e.getKeyCode(), false);
+        keysDown.remove(e.getKeyCode());
     }
-    
+
     public void keyTyped(KeyEvent e) {}
 }

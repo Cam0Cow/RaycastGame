@@ -21,18 +21,34 @@ public class GameState {
         keyState = KeyState.getKeyState();
     }
     
+    /**
+     * Returns the current player
+     * @return the current player
+     */
     public Player getPlayer() {
         return player;
     }
     
+    /**
+     * Sets the current player
+     * @param p the new player
+     */
     public void setPlayer(Player p) {
         player = p;
     }
     
+    /**
+     * Returns the current level
+     * @return the current level
+     */
     public LevelMap getLevelMap() {
         return levelMap;
     }
     
+    /**
+     * Set the current level
+     * @param lm the new level
+     */
     public void setLevelMap(LevelMap lm) {
         levelMap = lm;
     }

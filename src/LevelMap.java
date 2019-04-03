@@ -26,11 +26,12 @@ public class LevelMap {
             height = sc.nextInt();
             locX = sc.nextInt();
             locY = sc.nextInt();
+            sc.nextLine();
             map = new MapTile[height][width];
             for (int i=0; i<height; i++) {
+            	String line = sc.nextLine();
                 for (int j=0; j<width; j++) {
-                    map[i][j] = MapTile.fromInt(
-                    	translate(sc.findWithinHorizon(".",0).charAt(0)));
+                    map[i][j] = MapTile.fromInt(translate(line.charAt(j)));
                 }
             }
             
@@ -71,6 +72,11 @@ public class LevelMap {
         return map;
     }
     
+    /**
+     * Translates a map character to a tile index
+     * @param c the map character
+     * @return the tile index
+     */
     private int translate(char c) {
     	if (Character.isDigit(c)) {
     		return c - '0';
@@ -83,10 +89,18 @@ public class LevelMap {
     	}
     }
     
+    /**
+     * Returns the starting x coordinate
+     * @return the starting y coordinate
+     */
     public int getLocX() {
     	return locX;
     }
     
+    /**
+     * Returns the starting y coordinate
+     * @return the starting y coordinate
+     */
     public int getLocY() {
     	return locY;
     }

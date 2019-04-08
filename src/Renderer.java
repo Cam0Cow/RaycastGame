@@ -85,7 +85,7 @@ public class Renderer {
             if (lineHeight < 0) lineHeight = 0;
             int start = (height - lineHeight) / 2;
             int end = start + lineHeight;
-            Color c = Color.GREEN; // set color here
+            Color c = MapTile.getColor(mt[mapY][mapX]);
             if (!side) c = c.darker();
             g.setColor(c);
             g.drawLine(x,start,x,end);

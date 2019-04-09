@@ -6,11 +6,13 @@ import java.awt.event.*;
 public class GameLoop {
 	
 	private GameState state;
+	private Renderer rend;
 	private PriorityQueue<GameEvent> queue;
 	private Instant previousFrame;
 	
-	public GameLoop(GameState gs) {
+	public GameLoop(GameState gs, Renderer r) {
 		state = gs;
+		rend = r;
 		queue = new PriorityQueue<GameEvent>();
 		previousFrame = Instant.now();
 	}
@@ -25,9 +27,11 @@ public class GameLoop {
 		while (!done) {
 			Instant now = Instant.now();
 			Duration dt = Duration.between(previousFrame, now);
+			previousFrame = now;
 			while (!queue.isEmpty()) {
 				queue.poll().handle(state, dt);
 			}
+			rend.render(state);
 		}
 	}
 }

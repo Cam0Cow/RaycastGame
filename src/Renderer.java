@@ -2,18 +2,30 @@ import java.awt.*;
 import java.awt.image.*;
 import java.awt.geom.*;
 
+/**
+ * Represents a game renderer
+ */
 public class Renderer {
     
     private BufferedImage surface;
     private int width, height;
     public static final double FOV = 0.66;
     
+    /**
+     * Creates a new renderer with a given width and height
+     * @param w the width
+     * @param h the height
+     */
     public Renderer(int w, int h) {
         width = w;
         height = h;
         surface = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
     }
     
+    /**
+     * renders the given GameState to a BufferedImage
+     * @param game the current GameState
+     */
     public void render(GameState game) {
         Graphics2D g = surface.createGraphics();
         g.setBackground(Color.BLUE.brighter());
@@ -74,10 +86,8 @@ public class Renderer {
             
             if (side) {
                 perpWallDist = (mapY - posY + (1 - stepY) / 2) / rayDirY;
-                //if (x == 0) System.out.printf("%d %f %d %f%n",mapY,posY,stepY,rayDirY);
             } else {
-                perpWallDist = (mapX - posX + (1 - stepX) / 2) / rayDirX;
-                //if (x == 0) System.out.printf("%d %f %d %f%n",mapX,posX,stepX,rayDirX);
+                perpWallDist = (mapX - posX + (1 - stepX) / 2) / rayDirX;     
             }
             
             int lineHeight = (int) (height / perpWallDist);
@@ -93,22 +103,29 @@ public class Renderer {
         }
     }
     
+    /**
+     * Returns the rendered surface
+     * @return the rendered surface
+     */
     public BufferedImage getSurface() {
         return surface;
     }
     
+    /**
+     * Returns a scaled version of the rendered surface
+     * @param desired the new dimensions of the surface
+     * @return a scaled version of the rendered surface
+     */
     public Image getScaledSurface (Dimension desired) {
+    	if (desired.equals(getSize())) return getSurface();
         return surface.getScaledInstance(
             desired.width, desired.height, Image.SCALE_FAST);
-        /*double xScale = desired.width / (double) width;
-        double yScale = desired.height / (double) height;
-        BufferedImage scaled = new BufferedImage(
-            width, height, BufferedImage.TYPE_INT_ARGB);
-        AffineTransform af = AffineTransform.getScaleInstance(xScale, yScale);
-        return new AffineTransformOp(
-            af, AffineTransformOp.TYPE_BILINEAR).filter(surface, scaled);*/
     }
     
+    /**
+     * Returns the size of the Renderer
+     * @return the size of the Renderer
+     */
     public Dimension getSize() {
         return new Dimension(width, height);
     }

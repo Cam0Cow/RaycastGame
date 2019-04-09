@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.*;
 
 public class Test extends JFrame implements KeyListener {
     
@@ -16,6 +17,9 @@ public class Test extends JFrame implements KeyListener {
         GraphicsEnvironment.getLocalGraphicsEnvironment()
             .getScreenDevices()[0].setFullScreenWindow(this);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setCursor(getToolkit().createCustomCursor(
+            new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB)
+                ,new Point(), null));
         setSize(Toolkit.getDefaultToolkit().getScreenSize());
         setVisible(true);
         this.addKeyListener(this);
@@ -74,6 +78,9 @@ public class Test extends JFrame implements KeyListener {
     			repaint();
     			break;
     		}
+            case KeyEvent.VK_ESCAPE: {
+                System.exit(0);
+            }
     	}
     }
 }

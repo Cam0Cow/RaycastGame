@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.image.*;
+import java.awt.geom.*;
 
 public class Renderer {
     
@@ -94,6 +95,18 @@ public class Renderer {
     
     public BufferedImage getSurface() {
         return surface;
+    }
+    
+    public Image getScaledSurface (Dimension desired) {
+        return surface.getScaledInstance(
+            desired.width, desired.height, Image.SCALE_FAST);
+        /*double xScale = desired.width / (double) width;
+        double yScale = desired.height / (double) height;
+        BufferedImage scaled = new BufferedImage(
+            width, height, BufferedImage.TYPE_INT_ARGB);
+        AffineTransform af = AffineTransform.getScaleInstance(xScale, yScale);
+        return new AffineTransformOp(
+            af, AffineTransformOp.TYPE_BILINEAR).filter(surface, scaled);*/
     }
     
     public Dimension getSize() {

@@ -5,24 +5,25 @@ import java.awt.event.*;
 public class Test extends JFrame implements KeyListener {
     
     private Renderer rend;
-    private Dimension dim;
     private GameState game;
     
-    public Test(Renderer rend, GameState g, Dimension d) {
+    public Test(Renderer rend, GameState g) {
         super("Test");
         this.rend = rend;
-        dim = d;
         game = g;
+        setExtendedState(MAXIMIZED_BOTH);
+        setUndecorated(true);
+        GraphicsEnvironment.getLocalGraphicsEnvironment()
+            .getScreenDevices()[0].setFullScreenWindow(this);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(Toolkit.getDefaultToolkit().getScreenSize());
         setVisible(true);
-        Insets in = getInsets();
-        setSize(in.left+dim.width, in.bottom+dim.height);
         this.addKeyListener(this);
     }
     
     public void paint(Graphics g) {
     	rend.render(game);
-        g.drawImage(rend.getSurface(),0,0,null);
+        g.drawImage(rend.getScaledSurface(getSize()),0,0,null);
     }
     
     public void keyTyped(KeyEvent e) {}

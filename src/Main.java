@@ -1,5 +1,6 @@
 import javax.imageio.*;
 import java.io.*;
+import java.awt.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -9,7 +10,8 @@ public class Main {
         	game.getLevelMap().getLocX()+0.5,
         	game.getLevelMap().getLocY()+0.5,
         	-0.5,-1));
-        Renderer rend = new Renderer(1280,960);
-        new Test(rend, game, rend.getSize());
+        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+        Renderer rend = new Renderer(size.width/2, size.height/2);
+        new Test(rend, game);
     }
 }

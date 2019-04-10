@@ -36,16 +36,54 @@ public class GameLoop {
 			}
 			rend.render(state);
             disp.show(rend);
-            while (!disp.isFrameDone());
+            //while (!disp.isFrameDone());
+            delay(16);
             disp.resetFrameStatus();
 		}
 	}
     
     private void handleKeys(Duration dt) {
         Iterator<Integer> keys = KeyState.getKeyState().iterator();
+        Player p = state.getPlayer();
         while (keys.hasNext()) {
             switch (keys.next()) {
                 case KeyEvent.VK_ESCAPE: System.exit(0); break;
+                case KeyEvent.VK_W: {
+	    			p.setPosX(p.getPosX()+p.getDirX()/10.0);
+	    			p.setPosY(p.getPosY()+p.getDirY()/10.0);
+	    			break;
+    			}
+	    		case KeyEvent.VK_S: {
+	    			p.setPosX(p.getPosX()-p.getDirX()/10.0);
+	    			p.setPosY(p.getPosY()-p.getDirY()/10.0);
+	    			break;
+	    		}
+	    		case KeyEvent.VK_D: {
+	    			p.setPosX(p.getPosX()-p.getDirY()/10.0);
+	    			p.setPosY(p.getPosY()+p.getDirX()/10.0);
+	    			break;
+	    		}
+	    		case KeyEvent.VK_A: {
+	    			p.setPosX(p.getPosX()+p.getDirY()/10.0);
+	    			p.setPosY(p.getPosY()-p.getDirX()/10.0);
+	    			break;
+	    		}
+	    		case KeyEvent.VK_RIGHT: {
+	    			double x = p.getDirX();
+	    			double y = p.getDirY();
+	    			double angle = Math.PI/50;
+	    			p.setDirX(x*Math.cos(angle)-y*Math.sin(angle));
+	    			p.setDirY(x*Math.sin(angle)+y*Math.cos(angle));
+	    			break;
+	    		}
+	    		case KeyEvent.VK_LEFT: {
+	    			double x = p.getDirX();
+	    			double y = p.getDirY();
+	    			double angle = -Math.PI/50;
+	    			p.setDirX(x*Math.cos(angle)-y*Math.sin(angle));
+	    			p.setDirY(x*Math.sin(angle)+y*Math.cos(angle));
+	    			break;
+	    		}
             }
         }
     }

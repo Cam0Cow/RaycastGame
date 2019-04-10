@@ -9,7 +9,7 @@ public class Renderer {
     
     private BufferedImage surface, back;
     private int width, height;
-    public static final double FOV = 0.66;
+    public static final double FOV = 0.9;
     
     /**
      * Creates a new renderer with a given width and height
@@ -103,11 +103,9 @@ public class Renderer {
             g.drawLine(x,start,x,end);
         }
         
-        BufferedImage tmp = back;
-        back = surface;
-        surface = tmp;
+        surface = back;
         
-        System.out.println("Frame was rendered");
+        // System.out.println("Frame was rendered");
     }
     
     /**

@@ -7,7 +7,7 @@ import java.awt.geom.*;
  */
 public class Renderer {
     
-    private BufferedImage surface;
+    private BufferedImage surface, back;
     private int width, height;
     public static final double FOV = 0.66;
     
@@ -20,6 +20,7 @@ public class Renderer {
         width = w;
         height = h;
         surface = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        back    = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
     }
     
     /**
@@ -27,7 +28,7 @@ public class Renderer {
      * @param game the current GameState
      */
     public void render(GameState game) {
-        Graphics2D g = surface.createGraphics();
+        Graphics2D g = back.createGraphics();
         g.setBackground(Color.BLUE.brighter());
         g.clearRect(0,0,width,height/2);
         g.setBackground(Color.GRAY);
@@ -101,6 +102,12 @@ public class Renderer {
             g.setColor(c);
             g.drawLine(x,start,x,end);
         }
+        
+        BufferedImage tmp = back;
+        back = surface;
+        surface = tmp;
+        
+        System.out.println("Frame was rendered");
     }
     
     /**

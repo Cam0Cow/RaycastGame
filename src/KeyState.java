@@ -23,6 +23,14 @@ public class KeyState implements KeyListener {
         if (ref == null) ref = new KeyState();
         return ref;
     }
+    
+    /**
+     * Returns an iterator for the keys that are pressed
+     * @return an iterator for the keys that are pressed 
+     */
+    public Iterator<Integer> iterator() {
+        return keysDown.iterator();
+    }
 	
 	/**
 	 * Check whether a key is down

@@ -7,12 +7,14 @@ public class GameLoop {
 	
 	private GameState state;
 	private Renderer rend;
+    private Display disp;
 	private PriorityQueue<GameEvent> queue;
 	private Instant previousFrame;
 	
-	public GameLoop(GameState gs, Renderer r) {
+	public GameLoop(GameState gs, Renderer r, Display d) {
 		state = gs;
 		rend = r;
+        disp = d;
 		queue = new PriorityQueue<GameEvent>();
 		previousFrame = Instant.now();
 	}
@@ -28,10 +30,37 @@ public class GameLoop {
 			Instant now = Instant.now();
 			Duration dt = Duration.between(previousFrame, now);
 			previousFrame = now;
+            handleKeys(dt);
 			while (!queue.isEmpty()) {
 				queue.poll().handle(state, dt);
 			}
 			rend.render(state);
+            disp.show(rend);
+            while (!disp.isFrameDone());
+            disp.resetFrameStatus();
 		}
 	}
+    
+    private void handleKeys(Duration dt) {
+        Iterator<Integer> keys = KeyState.getKeyState().iterator();
+        while (keys.hasNext()) {
+            switch (keys.next()) {
+                case KeyEvent.VK_ESCAPE: System.exit(0); break;
+            }
+        }
+    }
+    
+    private void delay(long ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {}
+    }
 }
+
+
+
+
+
+
+
+

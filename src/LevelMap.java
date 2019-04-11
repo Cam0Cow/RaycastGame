@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class LevelMap {
     
     private MapTile[][] map;
+    private Entity[] entities;
     private String name;
     private int width;
     private int height;

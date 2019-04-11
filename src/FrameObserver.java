@@ -6,7 +6,7 @@ public class FrameObserver implements ImageObserver {
     private boolean frameDone;
     
     public FrameObserver() {
-        frameDone = false;
+        frameDone = true;
     }
     
     public boolean imageUpdate(Image image, int flags, int x,

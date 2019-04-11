@@ -36,9 +36,10 @@ public class GameLoop {
 			}
 			rend.render(state);
             disp.show(rend);
-            //while (!disp.isFrameDone());
-            delay(16);
+            while (!disp.isFrameDone());
+            //delay(16);
             disp.resetFrameStatus();
+            //System.out.println("really out here");
 		}
 	}
     

@@ -11,9 +11,9 @@ public class FrameObserver implements ImageObserver {
     
     public boolean imageUpdate(Image image, int flags, int x,
         int y, int width, int height) {
-            System.out.println(flags);
+            //System.out.println(flags);
         if ((flags & ALLBITS) != 0) {
-            System.out.println("yes!");
+            //System.out.println("yes!");
             frameDone = true;
             return false;
         }
@@ -21,6 +21,7 @@ public class FrameObserver implements ImageObserver {
     }
     
     public boolean isFrameDone() {
+        try {Thread.sleep(1);}catch(Exception e){}
         return frameDone;
     }
     

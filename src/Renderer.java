@@ -8,6 +8,7 @@ import java.awt.geom.*;
 public class Renderer {
     
     private BufferedImage surface, back;
+    private double[] wallDistances;
     private int width, height;
     public static final double FOV = 0.9;
     
@@ -21,6 +22,7 @@ public class Renderer {
         height = h;
         surface = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         back    = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        wallDistances = new double[w];
     }
     
     /**
@@ -92,6 +94,7 @@ public class Renderer {
             }
             
             int lineHeight = (int) (height / perpWallDist);
+            wallDistances[x] = perpWallDist;
             // System.out.println(x + ": " + perpWallDist);
             if (lineHeight > height) lineHeight = height;
             if (lineHeight < 0) lineHeight = 0;

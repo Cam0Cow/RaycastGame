@@ -11,8 +11,7 @@ public class Main {
         	game.getLevelMap().getLocY()+0.5,
         	-0.5,-1));
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-        Renderer rend = new Renderer(size.width, size.height);
-        //new Test(rend, game);
+        Renderer rend = new Renderer(size.width/2, size.height/2);
         GameLoop gl = new GameLoop(game, rend, new Display());
         gl.loop();
     }

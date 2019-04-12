@@ -34,11 +34,11 @@ public class GameLoop {
 			while (!queue.isEmpty()) {
 				queue.poll().handle(state, dt);
 			}
+			while (!disp.isFrameDone());
+            disp.resetFrameStatus();
 			rend.render(state);
             disp.show(rend);
-            //while (!disp.isFrameDone());
-            delay(16);
-            disp.resetFrameStatus();
+            System.out.println (dt.toMillis());
 		}
 	}
     

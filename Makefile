@@ -1,3 +1,5 @@
+all: clean build
+
 build:
 	javac src/*.java -d bin/
 	jar cfe RaycastGame.jar Main -C bin/ .

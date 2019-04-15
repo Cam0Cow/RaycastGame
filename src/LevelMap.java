@@ -1,5 +1,5 @@
 import java.io.*;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Represents a 2D map (i.e. one level only)
@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class LevelMap {
     
     private MapTile[][] map;
-    private Entity[] entities;
+    private HashSet<Entity> entities;
     private String name;
     private int width;
     private int height;
@@ -28,6 +28,8 @@ public class LevelMap {
             locX = sc.nextInt();
             locY = sc.nextInt();
             sc.nextLine();
+            entities = new HashSet<Entity>();
+            entities.add(new Monster());
             map = new MapTile[height][width];
             for (int i=0; i<height; i++) {
             	String line = sc.nextLine();
@@ -71,6 +73,14 @@ public class LevelMap {
      */
     public MapTile[][] getMap() {
         return map;
+    }
+    
+    /**
+     * Returns the set of all entities
+     * @return the set of all entities
+     */
+    public HashSet<Entity> getEntities() {
+    	return entities;
     }
     
     /**

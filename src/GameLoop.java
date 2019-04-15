@@ -38,7 +38,6 @@ public class GameLoop {
             disp.resetFrameStatus();
 			rend.render(state);
             disp.show(rend);
-            System.out.println (dt.toMillis());
 		}
 	}
     

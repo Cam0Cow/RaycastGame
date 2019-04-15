@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.image.*;
 import java.awt.geom.*;
+import java.util.*;
 
 /**
  * Represents a game renderer
@@ -37,6 +38,7 @@ public class Renderer {
         g.clearRect(0,height/2,width,height/2);
         Player p = game.getPlayer();
         MapTile[][] mt = game.getLevelMap().getMap();
+        HashSet<Entity> entities = game.getLevelMap().getEntities();
         
         double posX = p.getPosX();
         double posY = p.getPosY();
@@ -106,9 +108,19 @@ public class Renderer {
             g.drawLine(x,start,x,end);
         }
         
-        surface = back;
+        double dirX2 = dirX*dirX; double dirY2 = dirY*dirY;
+        double eX = dirX - planeX; double eY = dirY - planeY;
+        double edgeView = (dirX*eX+dirY*eY)/(Math.sqrt(dirX2+dirY2)*Math.sqrt(eX*eX+eY*eY));
+        g.setColor(Color.GRAY);
+        g.drawString("view edge: "+edgeView, 50, 50);
+        for (Entity e : entities) {
+        	double enemyX = e.getX() - posX;
+        	double enemyY = e.getY() - posY;
+        	double enemyView = (dirX*enemyX + dirY*enemyY)/(Math.sqrt(dirX2+dirY2)*Math.sqrt(enemyX*enemyX+enemyY*enemyY));
+        	g.drawString("Angle to enemy "+Math.acos(enemyView)*180/Math.PI, 50, 100);
+        }
         
-        // System.out.println("Frame was rendered");
+        surface = back; // for double buffering
     }
     
     /**

@@ -110,17 +110,32 @@ public class Renderer {
         
         double dirX2 = dirX*dirX; double dirY2 = dirY*dirY;
         double eX = dirX - planeX; double eY = dirY - planeY;
-        double edgeView = (dirX*eX+dirY*eY)/(Math.sqrt(dirX2+dirY2)*Math.sqrt(eX*eX+eY*eY));
+        double edgeView = (dirX*eX+dirY*eY)/(Math.sqrt(dirX2+dirY2)*Math.sqrt(eX*eX+eY*eY)); // player . edge
+        double spanScale = width/2/Math.acos(edgeView); // defines how fast the enemies turn out of view
         g.setColor(Color.GRAY);
         g.drawString("view edge: "+edgeView, 50, 50);
         for (Entity e : entities) {
         	double enemyX = e.getX() - posX;
         	double enemyY = e.getY() - posY;
         	double enemyView = (dirX*enemyX + dirY*enemyY)/(Math.sqrt(dirX2+dirY2)*Math.sqrt(enemyX*enemyX+enemyY*enemyY));
-        	g.drawString("Angle to enemy "+Math.acos(enemyView)*180/Math.PI, 50, 100);
+        	double enemyAngle = Math.acos(enemyView);
+        	g.drawString("view enemy: "+enemyView, 50, 100);
+        	if (enemyView > edgeView) { // or is it 1 - edgeView?
+        		g.setColor(Color.GREEN);
+        		if (toTheLeft(p, e)) enemyAngle = -enemyAngle;
+        		Image tex = e.getUnclippedTexture(p);
+        		g.drawImage(tex, (int)(width/2+enemyAngle*spanScale), (height-tex.getHeight(null))/2, null);
+        	}
+        	g.drawString("If Green, enemy should be visible", 50, 150);
         }
         
         surface = back; // for double buffering
+    }
+    
+    private boolean toTheLeft(Player p, Entity e) {
+    	// Use a cross product between their vectors. If the z-component is negative
+    	// then it's on the right, Otherwise on the left
+    	return false;
     }
     
     /**

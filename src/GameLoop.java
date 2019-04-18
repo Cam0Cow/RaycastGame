@@ -38,40 +38,40 @@ public class GameLoop {
             disp.resetFrameStatus();
 			rend.render(state);
             disp.show(rend);
-            System.out.println (dt.toMillis());
 		}
 	}
     
     private void handleKeys(Duration dt) {
+    	int ms = (int) dt.toMillis();
         Iterator<Integer> keys = KeyState.getKeyState().iterator();
         Player p = state.getPlayer();
         while (keys.hasNext()) {
             switch (keys.next()) {
                 case KeyEvent.VK_ESCAPE: System.exit(0); break;
                 case KeyEvent.VK_W: {
-	    			p.setPosX(p.getPosX()+p.getDirX()/10.0);
-	    			p.setPosY(p.getPosY()+p.getDirY()/10.0);
+	    			p.setPosX(p.getPosX()+p.getDirX()*ms/1000.0);
+	    			p.setPosY(p.getPosY()+p.getDirY()*ms/1000.0);
 	    			break;
     			}
 	    		case KeyEvent.VK_S: {
-	    			p.setPosX(p.getPosX()-p.getDirX()/10.0);
-	    			p.setPosY(p.getPosY()-p.getDirY()/10.0);
+	    			p.setPosX(p.getPosX()-p.getDirX()*ms/1000.0);
+	    			p.setPosY(p.getPosY()-p.getDirY()*ms/1000.0);
 	    			break;
 	    		}
 	    		case KeyEvent.VK_D: {
-	    			p.setPosX(p.getPosX()-p.getDirY()/10.0);
-	    			p.setPosY(p.getPosY()+p.getDirX()/10.0);
+	    			p.setPosX(p.getPosX()-p.getDirY()*ms/1000.0);
+	    			p.setPosY(p.getPosY()+p.getDirX()*ms/1000.0);
 	    			break;
 	    		}
 	    		case KeyEvent.VK_A: {
-	    			p.setPosX(p.getPosX()+p.getDirY()/10.0);
-	    			p.setPosY(p.getPosY()-p.getDirX()/10.0);
+	    			p.setPosX(p.getPosX()+p.getDirY()*ms/1000.0);
+	    			p.setPosY(p.getPosY()-p.getDirX()*ms/1000.0);
 	    			break;
 	    		}
 	    		case KeyEvent.VK_RIGHT: {
 	    			double x = p.getDirX();
 	    			double y = p.getDirY();
-	    			double angle = Math.PI/50;
+	    			double angle = Math.PI * ms / 2000;
 	    			p.setDirX(x*Math.cos(angle)-y*Math.sin(angle));
 	    			p.setDirY(x*Math.sin(angle)+y*Math.cos(angle));
 	    			break;
@@ -79,7 +79,7 @@ public class GameLoop {
 	    		case KeyEvent.VK_LEFT: {
 	    			double x = p.getDirX();
 	    			double y = p.getDirY();
-	    			double angle = -Math.PI/50;
+	    			double angle = -Math.PI * ms / 2000;
 	    			p.setDirX(x*Math.cos(angle)-y*Math.sin(angle));
 	    			p.setDirY(x*Math.sin(angle)+y*Math.cos(angle));
 	    			break;

@@ -13,7 +13,8 @@ public class TextureAtlas {
 	private TextureAtlas() {
 		map = new HashMap<String, Image>();
 		try {
-			map.put("monster", ImageIO.read(new File("..\\textures\\monster.png")));
+			map.put("monster", ImageIO.read(new 
+File("textures/monster.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -122,7 +122,7 @@ public class Renderer {
         	g.drawString("view enemy: "+enemyView, 50, 100);
         	if (enemyView > edgeView) { // or is it 1 - edgeView?
         		g.setColor(Color.GREEN);
-        		if (toTheLeft(p, e)) enemyAngle = -enemyAngle;
+        		if (dirX*enemyY-enemyX*dirY < 0) enemyAngle = -enemyAngle;
         		Image tex = e.getUnclippedTexture(p);
         		g.drawImage(tex, (int)(width/2+enemyAngle*spanScale), (height-tex.getHeight(null))/2, null);
         	}
@@ -130,12 +130,6 @@ public class Renderer {
         }
         
         surface = back; // for double buffering
-    }
-    
-    private boolean toTheLeft(Player p, Entity e) {
-    	// Use a cross product between their vectors. If the z-component is negative
-    	// then it's on the right, Otherwise on the left
-    	return false;
     }
     
     /**

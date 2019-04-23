@@ -24,4 +24,17 @@ public interface Entity {
 	 * @return the y coordinate of the entity
 	 */
 	public double getY();
+	
+	/**
+	 * Returns the width, in pixels, of the entity, if
+	 * it's at a distance of 1 away from the player
+	 * @return the width, in pixels, of the entity
+	 */
+	public double getWidth();
+	
+	/**
+	 * Returns the distance from the player
+	 * @return the distance from the player
+	 */
+	public double getDistance(Player p);
 }

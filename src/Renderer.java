@@ -117,19 +117,50 @@ public class Renderer {
         for (Entity e : entities) {
         	double enemyX = e.getX() - posX;
         	double enemyY = e.getY() - posY;
+        	double enemyDistance = e.getDistance(p);
         	double enemyView = (dirX*enemyX + dirY*enemyY)/(Math.sqrt(dirX2+dirY2)*Math.sqrt(enemyX*enemyX+enemyY*enemyY));
         	double enemyAngle = Math.acos(enemyView);
+        	double enemySideBias = Math.sin(e.getWidth()/width*FOV/enemyDistance/2);
         	g.drawString("view enemy: "+enemyView, 50, 100);
-        	if (enemyView > edgeView) { // or is it 1 - edgeView?
+        	g.drawString("enemy side bias: "+enemySideBias, 50, 75);
+        	if (enemyView+enemySideBias > edgeView) { // or is it 1 - edgeView?
         		g.setColor(Color.GREEN);
         		if (dirX*enemyY-enemyX*dirY < 0) enemyAngle = -enemyAngle;
-        		Image tex = e.getUnclippedTexture(p);
-        		g.drawImage(tex, (int)(width/2+enemyAngle*spanScale), (height-tex.getHeight(null))/2, null);
+        		BufferedImage tex = toBuf(e.getUnclippedTexture(p));
+        		int xwd = tex.getWidth(null);
+        		int yht = tex.getHeight(null);
+        		int xLeft = (int)(width/2+enemyAngle*spanScale);
+        		int yTop  = (height-yht)/2;
+        		// if there's a wall in front and to the left of the enemy,
+        		// clip the left side, otherwise, the right side
+        		if (wallDistances[xLeft] < enemyDistance) {
+        			int clipLeft = 0;
+        			while (wallDistances[++xLeft] < enemyDistance) clipLeft++;
+        			Graphics gg = tex.getGraphics();
+        			gg.clipRect(clipLeft, 0, xwd-clipLeft, yht);
+        			gg.dispose();
+        		} else {
+        			
+        		}
+        		
+        		g.drawImage(tex, xLeft, yTop, null);
         	}
         	g.drawString("If Green, enemy should be visible", 50, 150);
         }
         
         surface = back; // for double buffering
+    }
+    
+    public BufferedImage toBuf(Image img) {
+    	if (img instanceof BufferedImage) return (BufferedImage) img;
+    	BufferedImage bi = new BufferedImage(
+    		img.getWidth(null), img.getHeight(null), 
+    			BufferedImage.TYPE_INT_ARGB);
+    	
+    	Graphics g = bi.getGraphics();
+    	g.drawImage(img, 0, 0, null);
+    	g.dispose();
+    	return bi;
     }
     
     /**

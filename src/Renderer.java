@@ -131,19 +131,21 @@ public class Renderer {
         		int yht = tex.getHeight(null);
         		int xLeft = (int)(width/2+enemyAngle*spanScale);
         		int yTop  = (height-yht)/2;
+        		boolean show = true;
         		// if there's a wall in front and to the left of the enemy,
         		// clip the left side, otherwise, the right side
-        		if (wallDistances[xLeft] < enemyDistance) {
+        		if (xLeft > 0 && xLeft < width && wallDistances[xLeft] < enemyDistance) {
         			int clipLeft = 0;
-        			while (wallDistances[++xLeft] < enemyDistance) clipLeft++;
-        			Graphics gg = tex.getGraphics();
-        			gg.clipRect(clipLeft, 0, xwd-clipLeft, yht);
-        			gg.dispose();
-        		} else {
-        			
+        			while (xLeft < width-1 && wallDistances[++xLeft] < enemyDistance && clipLeft < xwd) clipLeft++;
+        			show = (clipLeft != xwd);
+        			if (show) tex = tex.getSubimage(clipLeft, 0, xwd-clipLeft, yht);
+        		} else if (xLeft+xwd > 0 && xLeft+xwd < width && wallDistances[xLeft+xwd] < enemyDistance){
+        			while (--xwd > 0 && xLeft+xwd < width && wallDistances[xLeft+xwd] < enemyDistance);
+        			show = (xwd != 0);
+        			if (show) tex =  tex.getSubimage(0, 0, xwd, yht);
         		}
         		
-        		g.drawImage(tex, xLeft, yTop, null);
+        		if (show) g.drawImage(tex, xLeft, yTop, null);
         	}
         	g.drawString("If Green, enemy should be visible", 50, 150);
         }

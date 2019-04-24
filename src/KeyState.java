@@ -1,16 +1,19 @@
 import java.util.*;
+import java.util.concurrent.*;
 import java.awt.event.*;
 import java.awt.*;
 
 public class KeyState implements KeyListener {
 
     private HashSet<Integer> keysDown;
+    private ConcurrentLinkedQueue<KeyStateChangedEvent> queue;
     private static KeyState ref;
 	
 	/**
 	 * Constructs a new keyState
 	 */
     private KeyState() {
+    	queue = new ConcurrentLinkedQueue<KeyStateChangedEvent>();
         keysDown = new HashSet<Integer>();
         ref = this;
     }
@@ -29,6 +32,7 @@ public class KeyState implements KeyListener {
      * @return an iterator for the keys that are pressed 
      */
     public Iterator<Integer> iterator() {
+    	flushQueue();
         return keysDown.iterator();
     }
 	
@@ -46,7 +50,7 @@ public class KeyState implements KeyListener {
 	 * @param e the keyEvent
 	 */
     public void keyPressed(KeyEvent e) {
-        keysDown.add(e.getKeyCode());
+        queue.offer(new KeyStateChangedEvent(e.getKeyCode(), true));
     }
 	
 	/**
@@ -54,8 +58,58 @@ public class KeyState implements KeyListener {
 	 * @param e the keyEvent
 	 */
     public void keyReleased(KeyEvent e) {
-        keysDown.remove(e.getKeyCode());
+        queue.offer(new KeyStateChangedEvent(e.getKeyCode(), false));
+    }
+    
+    /**
+     * Flushes the internal queue, updating the hashSet of keys
+     * to be as up-to-date as possible
+     */
+    private void flushQueue() {
+    	while (!queue.isEmpty()) {
+    		KeyStateChangedEvent ksce = queue.poll();
+    		if (ksce.isDown()) {
+    			keysDown.add(ksce.getKeyCode());
+    		} else {
+    			keysDown.remove(ksce.getKeyCode());
+    		}
+    	}
     }
 
     public void keyTyped(KeyEvent e) {}
+    
+    /**
+     * Represents a state change of a key
+     */
+    private static class KeyStateChangedEvent {
+    	
+    	private int keyCode;
+    	private boolean isDown;
+    	
+    	/**
+    	 * Constructs a new state change for a given key
+    	 * @param k the key code
+    	 * @param d whether the key is down 
+    	 */
+    	public KeyStateChangedEvent(int k, boolean d) {
+    		keyCode = k;
+    		isDown = d;
+    	}
+    	
+    	/**
+    	 * Returns the key code
+    	 * @return the key code
+    	 */
+    	public int getKeyCode() {
+    		return keyCode;
+    	}
+    	
+    	/**
+    	 * Returns whether the key is down
+    	 * @return whether the key is down
+    	 */
+    	public boolean isDown() {
+    		return isDown;
+    	}
+    }
 }

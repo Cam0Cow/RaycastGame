@@ -30,6 +30,7 @@ public class GameLoop {
 			Instant now = Instant.now();
 			Duration dt = Duration.between(previousFrame, now);
 			previousFrame = now;
+			state.getFPS().addFrame(dt.toMillis());
             handleKeys(dt);
 			while (!queue.isEmpty()) {
 				queue.poll().handle(state, dt);

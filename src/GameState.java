@@ -12,6 +12,7 @@ public class GameState {
     private Player player;
     private LevelMap levelMap;
     private KeyState keyState;
+    private FPS fps;
     
     /**
      * Constructs a new game state if necessary  
@@ -19,6 +20,7 @@ public class GameState {
     public GameState() {
         player = new Player();
         keyState = KeyState.getKeyState();
+        fps = new FPS();
     }
     
     /**
@@ -51,5 +53,13 @@ public class GameState {
      */
     public void setLevelMap(LevelMap lm) {
         levelMap = lm;
+    }
+    
+    /**
+     * Get the FPS object
+     * @return the FPS object
+     */
+    public FPS getFPS() {
+    	return fps;
     }
 }

@@ -42,6 +42,7 @@ public class KeyState implements KeyListener {
 	 * @return whether the key is pressed
 	 */
     public boolean isDown(Integer key) {
+    	flushQueue();
         return keysDown.contains(key);
     }
 	

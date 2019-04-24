@@ -14,7 +14,7 @@ public class Monster implements Entity {
 	}
 	
 	public double getWidth() {
-		return 200;
+		return 400;
 	}
 	
 	public double getDistance(Player p) {

@@ -3,11 +3,17 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.awt.image.*;
 
+/**
+ * Represents a display on the screen
+ */
 public class Display extends JFrame implements ImageObserver {
     
     private Image buf; // uninitalized
     private FrameObserver fo;
     
+    /**
+     * Constructs a new Display
+     */
     public Display() {
         setExtendedState(MAXIMIZED_BOTH);
         setUndecorated(true);
@@ -22,19 +28,34 @@ public class Display extends JFrame implements ImageObserver {
         fo = new FrameObserver();
     }
     
+    /**
+     * Shows a renderer on the screen
+     * @param rend the renderer to show
+     */
     public void show(Renderer rend) {
         buf = rend.getScaledSurface(getSize());
         repaint();
     }
     
+    /**
+     * Paints the buffer on the screen
+     * @param g the graphics object
+     */
     public void paint(Graphics g) {
         g.drawImage(buf, 0, 0, fo);
     }
     
+    /**
+     * Checks whether the frame is done rendering
+     * @return whether the frame is done rendering
+     */
     public boolean isFrameDone() {
         return fo.isFrameDone();
     }
     
+    /**
+     * Resets frame status
+     */
     public void resetFrameStatus() {
         fo.resetFrameStatus();
     }

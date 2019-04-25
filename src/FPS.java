@@ -23,7 +23,7 @@ public class FPS {
 	 * @return the FPS
 	 */
 	public int getFPS() {
-		return (int) (total / QUEUE_SIZE);
+		return (int) (1000.0 * QUEUE_SIZE / total);
 	}
 	
 	/**

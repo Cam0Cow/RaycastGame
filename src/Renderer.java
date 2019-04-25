@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.image.*;
 import java.awt.geom.*;
+import java.awt.font.*;
 import java.util.*;
 
 /**
@@ -86,7 +87,7 @@ public class Renderer {
                     mapY += stepY;
                     side = true;
                 }
-                if (mt[mapY][mapX].ordinal() > 0) hit = true;
+                if (mt[mapY][mapX] != MapTile.NOTHING) hit = true;
             }
             
             if (side) {
@@ -107,10 +108,6 @@ public class Renderer {
             g.setColor(c);
             g.drawLine(x,start,x,end);
         }
-        
-        g.setColor(Color.GRAY);
-        g.drawString(""+game.getFPS().getFPS()+" FPS", 50, 25);
-        g.drawString(String.format("XY: %.2f / %.2f", posX, posY), 50, 50);
         
         double dirX2 = dirX*dirX; double dirY2 = dirY*dirY;
         double eX = dirX - planeX; double eY = dirY - planeY;
@@ -153,9 +150,20 @@ public class Renderer {
         	// g.drawString("If Green, enemy should be visible", 50, 150);
         }
         
+        g.setColor(Color.GRAY);
+        g.drawString(""+game.getFPS().getFPS()+" FPS", 50, 25);
+        g.drawString(String.format("XY: %.2f / %.2f", posX, posY), 50, 50);
+        long memUsage = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        g.drawString("Memory usage: " + (memUsage >> 10) + " Kb", 50, 75);
+        
         surface = back; // for double buffering
     }
     
+    /**
+     * Converts an image into a buffered image
+     * @param img the given image
+     * @return the converted buffered image
+     */
     public BufferedImage toBuf(Image img) {
     	if (img instanceof BufferedImage) return (BufferedImage) img;
     	BufferedImage bi = new BufferedImage(
@@ -184,5 +192,23 @@ public class Renderer {
      */
     public Dimension getSize() {
         return new Dimension(width, height);
+    }
+    
+    /**
+     * Draws text with a white background
+     * @param g the graphics context
+     * @param txt the text to display
+     * @param x the x coordinate to draw at
+     * @param y the y coordinate to draw at
+     */
+    public static void drawText(Graphics2D g, String txt, int x, int y) {
+    	FontMetrics info = g.getFontMetrics();
+    	int width = info.stringWidth(txt);
+    	int height = info.getHeight();
+    	Color c = g.getColor();
+    	g.setColor(Color.WHITE);
+    	g.fillRect(x, y, width, height);
+    	g.setColor(c);
+    	g.drawString(txt, x, y);
     }
 }

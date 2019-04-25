@@ -9,7 +9,7 @@ public class Monster implements Entity {
 		double dx = p.getPosX() - getX();
 		double dy = p.getPosY() - getY();
 		double r = Math.sqrt(dx*dx+dy*dy);
-		if (r < 0.1) r = 0.4;
+		if (r < 0.4) r = 0.4;
 		return TEXTURE.getScaledInstance((int)(getWidth()/r), -1, Image.SCALE_FAST);
 	}
 	

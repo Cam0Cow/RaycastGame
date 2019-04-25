@@ -46,27 +46,44 @@ public class GameLoop {
     	int ms = (int) dt.toMillis();
         Iterator<Integer> keys = KeyState.getKeyState().iterator();
         Player p = state.getPlayer();
+        MapTile[][] map = state.getLevelMap().getMap();
         while (keys.hasNext()) {
             switch (keys.next()) {
                 case KeyEvent.VK_ESCAPE: System.exit(0); break;
                 case KeyEvent.VK_W: {
-	    			p.setPosX(p.getPosX()+p.getDirX()*ms/1000.0);
-	    			p.setPosY(p.getPosY()+p.getDirY()*ms/1000.0);
+                	double xNew = p.getPosX()+p.getDirX()*ms/1000.0;
+                	double yNew = p.getPosY()+p.getDirY()*ms/1000.0;
+                	if (map[(int)p.getPosY()][(int)xNew] != MapTile.NOTHING) xNew = p.getPosX();
+                	if (map[(int)yNew][(int)p.getPosX()] != MapTile.NOTHING) yNew = p.getPosY();
+	    			p.setPosX(xNew);
+	    			p.setPosY(yNew);
 	    			break;
     			}
 	    		case KeyEvent.VK_S: {
-	    			p.setPosX(p.getPosX()-p.getDirX()*ms/1000.0);
-	    			p.setPosY(p.getPosY()-p.getDirY()*ms/1000.0);
+	    			double xNew = p.getPosX()-p.getDirX()*ms/1000.0;
+                	double yNew = p.getPosY()-p.getDirY()*ms/1000.0;
+                	if (map[(int)p.getPosY()][(int)xNew] != MapTile.NOTHING) xNew = p.getPosX();
+                	if (map[(int)yNew][(int)p.getPosX()] != MapTile.NOTHING) yNew = p.getPosY();
+	    			p.setPosX(xNew);
+	    			p.setPosY(yNew);
 	    			break;
 	    		}
 	    		case KeyEvent.VK_D: {
-	    			p.setPosX(p.getPosX()-p.getDirY()*ms/1000.0);
-	    			p.setPosY(p.getPosY()+p.getDirX()*ms/1000.0);
+	    			double xNew = p.getPosX()-p.getDirY()*ms/1000.0;
+                	double yNew = p.getPosY()+p.getDirX()*ms/1000.0;
+                	if (map[(int)p.getPosY()][(int)xNew] != MapTile.NOTHING) xNew = p.getPosX();
+                	if (map[(int)yNew][(int)p.getPosX()] != MapTile.NOTHING) yNew = p.getPosY();
+	    			p.setPosX(xNew);
+	    			p.setPosY(yNew);
 	    			break;
 	    		}
 	    		case KeyEvent.VK_A: {
-	    			p.setPosX(p.getPosX()+p.getDirY()*ms/1000.0);
-	    			p.setPosY(p.getPosY()-p.getDirX()*ms/1000.0);
+	    			double xNew = p.getPosX()+p.getDirY()*ms/1000.0;
+                	double yNew = p.getPosY()-p.getDirX()*ms/1000.0;
+                	if (map[(int)p.getPosY()][(int)xNew] != MapTile.NOTHING) xNew = p.getPosX();
+                	if (map[(int)yNew][(int)p.getPosX()] != MapTile.NOTHING) yNew = p.getPosY();
+	    			p.setPosX(xNew);
+	    			p.setPosY(yNew);
 	    			break;
 	    		}
 	    		case KeyEvent.VK_RIGHT: {

@@ -108,36 +108,64 @@ public class Renderer {
             g.drawLine(x,start,x,end);
         }
         
+        g.setColor(Color.GRAY);
+        g.drawString(""+game.getFPS().getFPS()+" FPS", 50, 25);
+        g.drawString(String.format("XY: %.2f / %.2f", posX, posY), 50, 50);
+        
         double dirX2 = dirX*dirX; double dirY2 = dirY*dirY;
         double eX = dirX - planeX; double eY = dirY - planeY;
         double edgeView = (dirX*eX+dirY*eY)/(Math.sqrt(dirX2+dirY2)*Math.sqrt(eX*eX+eY*eY)); // player . edge
         double spanScale = width/2/Math.acos(edgeView); // defines how fast the enemies turn out of view
-        g.setColor(Color.GRAY);
-        g.drawString("view edge: "+edgeView, 50, 50);
+        // g.drawString("view edge: "+edgeView, 50, 50);
         for (Entity e : entities) {
         	double enemyX = e.getX() - posX;
         	double enemyY = e.getY() - posY;
+        	double enemyDistance = e.getDistance(p);
         	double enemyView = (dirX*enemyX + dirY*enemyY)/(Math.sqrt(dirX2+dirY2)*Math.sqrt(enemyX*enemyX+enemyY*enemyY));
         	double enemyAngle = Math.acos(enemyView);
-        	g.drawString("view enemy: "+enemyView, 50, 100);
-        	if (enemyView > edgeView) { // or is it 1 - edgeView?
-        		g.setColor(Color.GREEN);
+        	double enemySideBias = Math.sin(e.getWidth()/width*FOV/enemyDistance/2);
+        	// g.drawString("view enemy: "+enemyView, 50, 100);
+        	// g.drawString("enemy side bias: "+enemySideBias, 50, 75);
+        	if (enemyView+enemySideBias > edgeView) { // or is it 1 - edgeView?
+        		// g.setColor(Color.GREEN);
         		if (dirX*enemyY-enemyX*dirY < 0) enemyAngle = -enemyAngle;
-        		Image tex = e.getUnclippedTexture(p);
-        		g.drawImage(tex, (int)(width/2+enemyAngle*spanScale), (height-tex.getHeight(null))/2, null);
+        		BufferedImage tex = toBuf(e.getUnclippedTexture(p));
+        		int xwd = tex.getWidth(null);
+        		int yht = tex.getHeight(null);
+        		int xLeft = (int)(width/2+enemyAngle*spanScale);
+        		int yTop  = (height-yht)/2;
+        		boolean show = true;
+        		// if there's a wall in front and to the left of the enemy,
+        		// clip the left side, otherwise, the right side
+        		if (xLeft > 0 && xLeft < width && wallDistances[xLeft] < enemyDistance) {
+        			int clipLeft = 0;
+        			while (xLeft < width-1 && wallDistances[++xLeft] < enemyDistance && clipLeft < xwd) clipLeft++;
+        			show = (clipLeft != xwd);
+        			if (show) tex = tex.getSubimage(clipLeft, 0, xwd-clipLeft, yht);
+        		} else if (xLeft+xwd > 0 && xLeft+xwd < width && wallDistances[xLeft+xwd] < enemyDistance){
+        			while (--xwd > 0 && xLeft+xwd < width && xLeft+xwd > 0 && wallDistances[xLeft+xwd] < enemyDistance);
+        			show = (xwd != 0);
+        			if (show) tex =  tex.getSubimage(0, 0, xwd, yht);
+        		}
+        		
+        		if (show) g.drawImage(tex, xLeft, yTop, null);
         	}
-        	g.drawString("If Green, enemy should be visible", 50, 150);
+        	// g.drawString("If Green, enemy should be visible", 50, 150);
         }
         
         surface = back; // for double buffering
     }
     
-    /**
-     * Returns the rendered surface
-     * @return the rendered surface
-     */
-    public BufferedImage getSurface() {
-        return surface;
+    public BufferedImage toBuf(Image img) {
+    	if (img instanceof BufferedImage) return (BufferedImage) img;
+    	BufferedImage bi = new BufferedImage(
+    		img.getWidth(null), img.getHeight(null), 
+    			BufferedImage.TYPE_INT_ARGB);
+    	
+    	Graphics g = bi.getGraphics();
+    	g.drawImage(img, 0, 0, null);
+    	g.dispose();
+    	return bi;
     }
     
     /**
@@ -146,7 +174,6 @@ public class Renderer {
      * @return a scaled version of the rendered surface
      */
     public Image getScaledSurface (Dimension desired) {
-    	if (desired.equals(getSize())) return getSurface();
         return surface.getScaledInstance(
             desired.width, desired.height, Image.SCALE_FAST);
     }

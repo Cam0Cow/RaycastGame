@@ -150,6 +150,9 @@ public class Renderer {
         	// g.drawString("If Green, enemy should be visible", 50, 150);
         }
         
+        Image weapon = p.getWeapon().getTexture();
+        g.drawImage(weapon, width/2, height-weapon.getHeight(null), null);
+        
         g.setColor(Color.GRAY);
         g.drawString(""+game.getFPS().getFPS()+" FPS", 50, 25);
         g.drawString(String.format("XY: %.2f / %.2f", posX, posY), 50, 50);
@@ -157,6 +160,8 @@ public class Renderer {
         g.drawString("Memory usage: " + (memUsage >> 10) + " Kb", 50, 75);
         
         surface = back; // for double buffering
+        
+        g.dispose();
     }
     
     /**
@@ -164,7 +169,7 @@ public class Renderer {
      * @param img the given image
      * @return the converted buffered image
      */
-    public BufferedImage toBuf(Image img) {
+    public static BufferedImage toBuf(Image img) {
     	if (img instanceof BufferedImage) return (BufferedImage) img;
     	BufferedImage bi = new BufferedImage(
     		img.getWidth(null), img.getHeight(null), 

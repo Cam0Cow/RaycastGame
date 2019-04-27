@@ -11,9 +11,9 @@ public class MouseState implements MouseMotionListener {
 	
 	public MouseState(Dimension screenSize) {
 		deltaAngle = 0.0;
-		multiplier = 1.0 / screenSize.width;
 		xOrigin = screenSize.width / 2;
 		yOrigin = screenSize.height / 2;
+		multiplier = 1.0 / xOrigin;
 		try {
 			robot = new Robot();
 			robot.mouseMove(xOrigin, yOrigin);

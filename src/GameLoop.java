@@ -26,6 +26,7 @@ public class GameLoop {
 		rend = r;
         disp = d;
         mouseState = new MouseState(d.getSize());
+        d.setMouseState(mouseState);
 		queue = new PriorityQueue<GameEvent>();
 		previousFrame = Instant.now();
 	}
@@ -51,6 +52,7 @@ public class GameLoop {
 			previousFrame = now;
 			state.getFPS().addFrame(dt.toMillis());
             handleKeys(dt);
+            handleMouse();
 			while (!queue.isEmpty()) {
 				queue.poll().handle(state, dt);
 			}
@@ -130,7 +132,12 @@ public class GameLoop {
     }
     
     public void handleMouse() {
-    	// TODO
+        Player p = state.getPlayer();
+        double x = p.getDirX();
+        double y = p.getDirY();
+    	double angle = mouseState.getDeltaAngle();
+        p.setDirX(x*Math.cos(angle)-y*Math.sin(angle));
+        p.setDirY(x*Math.sin(angle)+y*Math.cos(angle));
     }
     
     /**

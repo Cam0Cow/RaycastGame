@@ -13,7 +13,9 @@ public class GameLoop {
 	private Renderer rend;
     private Display disp;
 	private PriorityQueue<GameEvent> queue;
+	private Map<GameEvent, Integer> registeredEvents;
 	private Instant previousFrame;
+	private long frameNumber;
 	
 	/**
 	 * Constructs a new game loop with the given parameters
@@ -23,11 +25,14 @@ public class GameLoop {
 	 */
 	public GameLoop(GameState gs, Renderer r, Display d) {
 		state = gs;
+		state.registerGameLoop(this);
 		rend = r;
         disp = d;
         mouseState = new MouseState(d.getSize());
         d.setMouseState(mouseState);
 		queue = new PriorityQueue<GameEvent>();
+		registeredEvents = new HashMap<GameEvent, Integer>();
+		frameNumber = 0;
 		previousFrame = Instant.now();
 	}
 	
@@ -37,6 +42,15 @@ public class GameLoop {
 	 */
 	public void queueEvent(GameEvent ge) {
 		queue.offer(ge);
+	}
+	
+	/**
+	 * Register a game event that should be triggered every certain number of frames
+	 * @param ge the game event
+	 * @param frameDelay the number of frames between triggerings
+	 */
+	public void registerRepeatedEvent(GameEvent ge, int frameDelay) {
+		registeredEvents.put(ge, frameDelay);
 	}
 	
 	/**
@@ -53,6 +67,7 @@ public class GameLoop {
 			state.getFPS().addFrame(dt.toMillis());
             handleKeys(dt);
             handleMouse();
+            handleRepeatedEvents();
 			while (!queue.isEmpty()) {
 				queue.poll().handle(state, dt);
 			}
@@ -60,6 +75,7 @@ public class GameLoop {
             disp.resetFrameStatus();
 			rend.render(state);
             disp.show(rend);
+            frameNumber++;
 		}
 	}
     
@@ -131,6 +147,9 @@ public class GameLoop {
         }
     }
     
+    /**
+     * Handles camera rotation due to mouse movements
+     */
     public void handleMouse() {
         Player p = state.getPlayer();
         double x = p.getDirX();
@@ -138,6 +157,17 @@ public class GameLoop {
     	double angle = mouseState.getDeltaAngle();
         p.setDirX(x*Math.cos(angle)-y*Math.sin(angle));
         p.setDirY(x*Math.sin(angle)+y*Math.cos(angle));
+    }
+    
+    /**
+     * Checks whether repeated events should be requeued this frame
+     */
+    public void handleRepeatedEvents() {
+    	for (GameEvent ge : registeredEvents.keySet()) {
+    		if (frameNumber % registeredEvents.get(ge) == 0) {
+    			queueEvent(ge);
+    		}
+    	}
     }
     
     /**

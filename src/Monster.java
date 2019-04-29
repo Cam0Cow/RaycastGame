@@ -8,6 +8,16 @@ public class Monster implements Entity {
 	
 	private static final Image TEXTURE = TextureAtlas.getTextureAtlas().getTexture("monster");
 	
+	private double x, y;
+	
+	/**
+	 * Constructs a new Monster
+	 */
+	public Monster() {
+		x = 4.0;
+		y = 4.0;
+	}
+	
 	/**
 	 * Returns the unclipped texture of the enemy
 	 * @param p the player that should see this enemy
@@ -45,7 +55,7 @@ public class Monster implements Entity {
 	 * @return the x coordinate of the enemy
 	 */
 	public double getX() {
-		return 4.0;
+		return x;
 	}
 	
 	/**
@@ -53,6 +63,18 @@ public class Monster implements Entity {
 	 * @return the y coordinate of the enemy
 	 */
 	public double getY() {
-		return 4.0;
+		return y;
+	}
+	
+	public void setX(double x) {
+		this.x = x;
+	}
+	
+	public void setY(double y) {
+		this.y = y;
+	}
+	
+	public void registerEntity(GameState state) {
+		state.getGameLoop().registerRepeatedEvent(new EnemyAIEvent(this), 100);
 	}
 }

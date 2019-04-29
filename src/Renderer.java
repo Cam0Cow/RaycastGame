@@ -115,6 +115,7 @@ public class Renderer {
         double spanScale = width/2/Math.acos(edgeView); // defines how fast the enemies turn out of view
         // g.drawString("view edge: "+edgeView, 50, 50);
         for (Entity e : entities) {
+        	// game.getGameLoop().queueEvent(new EnemyAIEvent(e));
         	double enemyX = e.getX() - posX;
         	double enemyY = e.getY() - posY;
         	double enemyDistance = e.getDistance(p);

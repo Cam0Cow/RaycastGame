@@ -26,7 +26,6 @@ public class MouseState implements MouseMotionListener {
 		int x = e.getXOnScreen();
 		deltaAngle += (x - xOrigin) * multiplier;
 		robot.mouseMove(xOrigin, yOrigin);
-		
 	}
 	
 	public void mouseDragged(MouseEvent e) {}

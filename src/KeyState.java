@@ -3,6 +3,9 @@ import java.util.concurrent.*;
 import java.awt.event.*;
 import java.awt.*;
 
+/**
+ * A structure that holds all of the pressed keys
+ */
 public class KeyState implements KeyListener {
 
     private HashSet<Integer> keysDown;

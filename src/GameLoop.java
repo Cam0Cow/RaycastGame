@@ -3,26 +3,46 @@ import java.time.chrono.*;
 import java.time.*;
 import java.awt.event.*;
 
+/**
+ * Represents a game loop
+ */
 public class GameLoop {
 	
 	private GameState state;
+	private MouseState mouseState;
 	private Renderer rend;
     private Display disp;
 	private PriorityQueue<GameEvent> queue;
 	private Instant previousFrame;
 	
+	/**
+	 * Constructs a new game loop with the given parameters
+	 * @param gs the current game state
+	 * @param r the frame renderer
+	 * @param d the display to draw to
+	 */
 	public GameLoop(GameState gs, Renderer r, Display d) {
 		state = gs;
 		rend = r;
         disp = d;
+        mouseState = new MouseState(d.getSize());
+        d.setMouseState(mouseState);
 		queue = new PriorityQueue<GameEvent>();
 		previousFrame = Instant.now();
 	}
 	
+	/**
+	 * Queues a game event for later processing
+	 * @param ge the given game event
+	 */
 	public void queueEvent(GameEvent ge) {
 		queue.offer(ge);
 	}
 	
+	/**
+	 * Called when the game is in progress
+	 * Runs everything basically
+	 */
 	public void loop() {
 		boolean done = false;
 		previousFrame = Instant.now().minus(Duration.ofMillis(1)); // not quite now
@@ -32,6 +52,7 @@ public class GameLoop {
 			previousFrame = now;
 			state.getFPS().addFrame(dt.toMillis());
             handleKeys(dt);
+            handleMouse();
 			while (!queue.isEmpty()) {
 				queue.poll().handle(state, dt);
 			}
@@ -42,6 +63,10 @@ public class GameLoop {
 		}
 	}
     
+    /**
+     * Handles the key presses from the last frame
+     * @param dt the last frame time
+     */
     private void handleKeys(Duration dt) {
     	int ms = (int) dt.toMillis();
         Iterator<Integer> keys = KeyState.getKeyState().iterator();
@@ -106,6 +131,19 @@ public class GameLoop {
         }
     }
     
+    public void handleMouse() {
+        Player p = state.getPlayer();
+        double x = p.getDirX();
+        double y = p.getDirY();
+    	double angle = mouseState.getDeltaAngle();
+        p.setDirX(x*Math.cos(angle)-y*Math.sin(angle));
+        p.setDirY(x*Math.sin(angle)+y*Math.cos(angle));
+    }
+    
+    /**
+     * Delays for a given amount of ms
+     * @param ms the given amount of ms
+     */
     private void delay(long ms) {
         try {
             Thread.sleep(ms);

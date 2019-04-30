@@ -79,7 +79,11 @@ public class KeyState implements KeyListener {
     		}
     	}
     }
-
+	
+	/**
+	 * Triggered by the OS whena key is typed
+	 * @param e the key event
+	 */
     public void keyTyped(KeyEvent e) {}
     
     /**

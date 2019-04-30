@@ -66,15 +66,27 @@ public class Monster implements Entity {
 		return y;
 	}
 	
+	/**
+	 * Sets the monster's x position
+	 * @param x the new x position
+	 */
 	public void setX(double x) {
 		this.x = x;
 	}
 	
+	/**
+	 * Sets the monster's y position
+	 * @param y the new y position
+	 */
 	public void setY(double y) {
 		this.y = y;
 	}
 	
+	/**
+	 * Register the entity with the game state
+	 * @param state the given game state
+	 */
 	public void registerEntity(GameState state) {
-		state.getGameLoop().registerRepeatedEvent(new EnemyAIEvent(this), 100);
+		state.getGameLoop().registerRepeatedEvent(new EnemyAIEvent(this), 1);
 	}
 }

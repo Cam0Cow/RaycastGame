@@ -116,6 +116,8 @@ public class Renderer {
         // g.drawString("view edge: "+edgeView, 50, 50);
         for (Entity e : entities) {
         	// game.getGameLoop().queueEvent(new EnemyAIEvent(e));
+        	g.setColor(Color.RED);
+        	g.drawString("Enemy pos: "+e.getX()+", "+e.getY(), 50, 100);
         	double enemyX = e.getX() - posX;
         	double enemyY = e.getY() - posY;
         	double enemyDistance = e.getDistance(p);

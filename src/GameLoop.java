@@ -69,6 +69,7 @@ public class GameLoop {
             handleMouse();
             handleRepeatedEvents();
 			while (!queue.isEmpty()) {
+				// System.out.println (queue.peek());
 				queue.poll().handle(state, dt);
 			}
 			while (!disp.isFrameDone());
@@ -148,10 +149,13 @@ public class GameLoop {
     }
     
     /**
-     * Handles camera rotation due to mouse movements
+     * Handles camera rotation due to mouse movements and gun shots
      */
     public void handleMouse() {
         Player p = state.getPlayer();
+        
+        if (mouseState.hasFired()) p.getWeapon().fire(this);
+        
         double x = p.getDirX();
         double y = p.getDirY();
     	double angle = mouseState.getDeltaAngle();

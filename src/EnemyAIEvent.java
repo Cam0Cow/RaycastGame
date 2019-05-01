@@ -29,7 +29,7 @@ public class EnemyAIEvent extends GameEvent {
 		dx /= mag;
 		dy /= mag;
 		
-		if (mag > 1) {
+		if (mag > 1 && mag < 10) {
 			double x = ent.getX();
 			double y = ent.getY();
 			double xn = x + dx / 50;

@@ -36,6 +36,13 @@ public class EnemyAIEvent extends GameEvent {
 			double yn = y + dy / 50;
 			if (map[(int)y][(int)xn] == MapTile.NOTHING) ent.setX(xn);
 			if (map[(int)yn][(int)x] == MapTile.NOTHING) ent.setY(yn);
+		} else if (mag < 0.9){
+			double x = ent.getX();
+			double y = ent.getY();
+			double xn = x - dx / 50;
+			double yn = y - dy / 50;
+			if (map[(int)y][(int)xn] == MapTile.NOTHING) ent.setX(xn);
+			if (map[(int)yn][(int)x] == MapTile.NOTHING) ent.setY(yn);
 		}
 	}
 }

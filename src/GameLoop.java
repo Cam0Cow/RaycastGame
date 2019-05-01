@@ -1,5 +1,4 @@
 import java.util.*;
-import java.time.chrono.*;
 import java.time.*;
 import java.awt.event.*;
 
@@ -13,7 +12,8 @@ public class GameLoop {
 	private Renderer rend;
     private Display disp;
 	private PriorityQueue<GameEvent> queue;
-	private Map<GameEvent, Integer> registeredEvents;
+	private ConcurrentMap<GameEvent, Integer> registeredEvents;
+	private ConcurrentMap<GameEvent, Long> futureEvents;
 	private Instant previousFrame;
 	private long frameNumber;
 	
@@ -31,7 +31,8 @@ public class GameLoop {
         mouseState = new MouseState(d.getSize());
         d.setMouseState(mouseState);
 		queue = new PriorityQueue<GameEvent>();
-		registeredEvents = new HashMap<GameEvent, Integer>();
+		registeredEvents = new ConcurrentMap<GameEvent, Integer>();
+		futureEvents = new ConcurrentMap<GameEvent, Long>();
 		frameNumber = 0;
 		previousFrame = Instant.now();
 	}
@@ -54,6 +55,15 @@ public class GameLoop {
 	}
 	
 	/**
+	 * Registers a game event that should be triggered only once, in a certain number of frames
+	 * @param ge the game event
+	 * @param frameDelay the number of frames to wait before triggering
+	 */
+	public void registerFutureEvent(GameEvent ge, int frameDelay) {
+		futureEvents.put(ge, frameNumber+frameDelay);
+	}
+	
+	/**
 	 * Called when the game is in progress
 	 * Runs everything basically
 	 */
@@ -67,6 +77,7 @@ public class GameLoop {
 			state.getFPS().addFrame(dt.toMillis());
             handleKeys(dt);
             handleMouse();
+            handleFutureEvents();
             handleRepeatedEvents();
 			while (!queue.isEmpty()) {
 				// System.out.println (queue.peek());
@@ -170,6 +181,18 @@ public class GameLoop {
     	for (GameEvent ge : registeredEvents.keySet()) {
     		if (frameNumber % registeredEvents.get(ge) == 0) {
     			queueEvent(ge);
+    		}
+    	}
+    }
+    
+    /**
+     * Checks whether future events should be queued this frame
+     */
+    public void handleFutureEvents() {
+    	for (GameEvent ge : futureEvents.keySet()) {
+    		if (frameNumber == futureEvents.get(ge)) {
+    			queueEvent(ge);
+    			futureEvents.remove(ge);
     		}
     	}
     }

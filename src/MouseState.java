@@ -46,11 +46,34 @@ public class MouseState implements MouseMotionListener, MouseListener {
 	 */
 	public void mouseDragged(MouseEvent e) {}
 	
+	/**
+	 * Triggered by the OS when the mouse has exited
+	 * @param e the mouse event
+	 */
 	public void mouseExited(MouseEvent e) {}
+	
+	/**
+	 * Triggered by the OS when the mouse has entered
+	 * @param e the mouse event
+	 */
 	public void mouseEntered(MouseEvent e) {}
+	
+	/**
+	 * Triggered by the OS when the mouse is released
+	 * @param e the mouse event
+	 */
 	public void mouseReleased(MouseEvent e) {}
+	
+	/**
+	 * Triggered by the OS when the mouse is clicked
+	 * @param e the mouse event
+	 */
 	public void mouseClicked(MouseEvent e) {}
 	
+	/**
+	 * Triggered by the OS when the mouse is pressed
+	 * @param e the mouse event
+	 */
 	public void mousePressed(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			hasFired = true;

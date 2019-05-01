@@ -1,5 +1,4 @@
 import java.util.*;
-import java.time.chrono.*;
 import java.time.*;
 import java.awt.event.*;
 
@@ -13,7 +12,10 @@ public class GameLoop {
 	private Renderer rend;
     private Display disp;
 	private PriorityQueue<GameEvent> queue;
+	private ConcurrentMap<GameEvent, Integer> registeredEvents;
+	private ConcurrentMap<GameEvent, Long> futureEvents;
 	private Instant previousFrame;
+	private long frameNumber;
 	
 	/**
 	 * Constructs a new game loop with the given parameters
@@ -23,11 +25,15 @@ public class GameLoop {
 	 */
 	public GameLoop(GameState gs, Renderer r, Display d) {
 		state = gs;
+		state.registerGameLoop(this);
 		rend = r;
         disp = d;
         mouseState = new MouseState(d.getSize());
         d.setMouseState(mouseState);
 		queue = new PriorityQueue<GameEvent>();
+		registeredEvents = new ConcurrentMap<GameEvent, Integer>();
+		futureEvents = new ConcurrentMap<GameEvent, Long>();
+		frameNumber = 0;
 		previousFrame = Instant.now();
 	}
 	
@@ -37,6 +43,24 @@ public class GameLoop {
 	 */
 	public void queueEvent(GameEvent ge) {
 		queue.offer(ge);
+	}
+	
+	/**
+	 * Register a game event that should be triggered every certain number of frames
+	 * @param ge the game event
+	 * @param frameDelay the number of frames between triggerings
+	 */
+	public void registerRepeatedEvent(GameEvent ge, int frameDelay) {
+		registeredEvents.put(ge, frameDelay);
+	}
+	
+	/**
+	 * Registers a game event that should be triggered only once, in a certain number of frames
+	 * @param ge the game event
+	 * @param frameDelay the number of frames to wait before triggering
+	 */
+	public void registerFutureEvent(GameEvent ge, int frameDelay) {
+		futureEvents.put(ge, frameNumber+frameDelay);
 	}
 	
 	/**
@@ -53,13 +77,17 @@ public class GameLoop {
 			state.getFPS().addFrame(dt.toMillis());
             handleKeys(dt);
             handleMouse();
-			while (!queue.isEmpty()) {
+            handleFutureEvents();
+            handleRepeatedEvents();
+			while (!queue.isEmpty() && !disp.isFrameDone()) {
+				// System.out.println (queue.peek());
 				queue.poll().handle(state, dt);
 			}
 			while (!disp.isFrameDone());
             disp.resetFrameStatus();
 			rend.render(state);
             disp.show(rend);
+            frameNumber++;
 		}
 	}
     
@@ -131,13 +159,42 @@ public class GameLoop {
         }
     }
     
+    /**
+     * Handles camera rotation due to mouse movements and gun shots
+     */
     public void handleMouse() {
         Player p = state.getPlayer();
+        
+        if (mouseState.hasFired()) p.getWeapon().fire(this);
+        
         double x = p.getDirX();
         double y = p.getDirY();
     	double angle = mouseState.getDeltaAngle();
         p.setDirX(x*Math.cos(angle)-y*Math.sin(angle));
         p.setDirY(x*Math.sin(angle)+y*Math.cos(angle));
+    }
+    
+    /**
+     * Checks whether repeated events should be requeued this frame
+     */
+    public void handleRepeatedEvents() {
+    	for (GameEvent ge : registeredEvents.keySet()) {
+    		if (frameNumber % registeredEvents.get(ge) == 0) {
+    			queueEvent(ge);
+    		}
+    	}
+    }
+    
+    /**
+     * Checks whether future events should be queued this frame
+     */
+    public void handleFutureEvents() {
+    	for (GameEvent ge : futureEvents.keySet()) {
+    		if (frameNumber == futureEvents.get(ge)) {
+    			queueEvent(ge);
+    			futureEvents.remove(ge);
+    		}
+    	}
     }
     
     /**

@@ -64,7 +64,8 @@ public class Display extends JFrame implements ImageObserver {
      * Sets the mouseState for this display
      * @param ms the mouse state
      */
-    public void setMouseState(MouseMotionListener ms) {
-        this.addMouseMotionListener(ms);
+    public void setMouseState(MouseState ms) {
+        this.addMouseMotionListener((MouseMotionListener) ms);
+        this.addMouseListener((MouseListener) ms);
     }
 }

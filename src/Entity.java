@@ -33,8 +33,26 @@ public interface Entity {
 	public double getWidth();
 	
 	/**
+	 * Sets the Entity's x position
+	 * @param x the new x position
+	 */
+	public void setX(double x);
+	
+	/**
+	 * Sets the Entity's y position
+	 * @param y the new y position
+	 */
+	public void setY(double y);
+	
+	/**
 	 * Returns the distance from the player
 	 * @return the distance from the player
 	 */
 	public double getDistance(Player p);
+	
+	/**
+	 * Register an entity with the game state
+	 * This is done so that AI can be set up
+	 */
+	public void registerEntity(GameState gs);
 }

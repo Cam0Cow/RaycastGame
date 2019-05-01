@@ -11,4 +11,10 @@ public interface Weapon {
 	 * @return the weapon's texture
 	 */
 	public Image getTexture();
+	
+	/**
+	 * Fires the gun
+	 * @param loop the game loop, for timing purposes
+	 */
+	public void fire(GameLoop loop);
 }

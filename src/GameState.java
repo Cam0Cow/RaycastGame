@@ -13,6 +13,7 @@ public class GameState {
     private LevelMap levelMap;
     private KeyState keyState;
     private FPS fps;
+    private GameLoop loop;
     
     /**
      * Constructs a new game state if necessary  
@@ -49,10 +50,33 @@ public class GameState {
     
     /**
      * Set the current level
+     * Can only be called after a game loop is set
      * @param lm the new level
      */
     public void setLevelMap(LevelMap lm) {
+    	if (loop == null) throw new IllegalStateException("No game loop registered");
         levelMap = lm;
+        for (Entity e : levelMap.getEntities()) e.registerEntity(this);
+    }
+    
+    /**
+     * Registers an active game loop with the game state
+     * Should only be called once
+     * @param l the given game loop
+     */
+    public void registerGameLoop(GameLoop l) {
+    	if (loop != null)
+    		throw new IllegalStateException("Game loop already registered");
+    	else
+    		loop = l;
+    }
+    
+    /**
+     * Returns the registered game loop
+     * @return the registered game loop
+     */
+    public GameLoop getGameLoop() {
+    	return loop;
     }
     
     /**

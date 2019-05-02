@@ -33,6 +33,7 @@ public class Handgun implements Weapon, Animatable {
 	 */
 	public void fire(GameLoop loop) {
 		fired = true;
+		loop.queueEvent(new BulletEvent());
 		loop.registerFutureEvent(new AnimationUpdateEvent(this), 5);
 	}
 	
@@ -40,7 +41,7 @@ public class Handgun implements Weapon, Animatable {
 	 * Called when the animation should display its next frame
 	 * When called, the gun resets back to not shooting
 	 */
-	public void nextFrame() {
+	public void nextFrame(GameState state) {
 		fired = false;
 	}
 }

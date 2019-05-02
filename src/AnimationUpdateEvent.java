@@ -22,6 +22,6 @@ public class AnimationUpdateEvent extends GameEvent {
 	 * @param dt the last frame time
 	 */
 	public void handle(GameState state, Duration dt) {
-		obj.nextFrame();
+		obj.nextFrame(state);
 	}
 }

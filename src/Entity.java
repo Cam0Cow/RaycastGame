@@ -55,4 +55,16 @@ public interface Entity {
 	 * This is done so that AI can be set up
 	 */
 	public void registerEntity(GameState gs);
+	
+	/**
+	 * Check whether the entity is dead
+	 * @return whether the entity is dead
+	 */
+	public boolean isDead();
+	
+	/**
+	 * Hurt the entity a certain number of health points
+	 * @param damage how much to hurt the monster
+	 */
+	public void damage(int damage);
 }

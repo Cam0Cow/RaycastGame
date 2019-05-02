@@ -7,5 +7,5 @@ public interface Animatable {
 	/**
 	 * Called when the next frame should be played
 	 */
-	public void nextFrame();
+	public void nextFrame(GameState state);
 }

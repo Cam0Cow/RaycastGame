@@ -29,13 +29,17 @@ public class LevelMap {
             locY = sc.nextInt();
             sc.nextLine();
             entities = new HashSet<Entity>();
-            entities.add(new Monster());
             map = new MapTile[height][width];
             for (int i=0; i<height; i++) {
             	String line = sc.nextLine();
                 for (int j=0; j<width; j++) {
                     map[i][j] = MapTile.fromInt(translate(line.charAt(j)));
                 }
+            }
+            sc.nextLine(); // skip whitespace
+            while (sc.hasNextLine()) {
+            	String[] ss = sc.nextLine().split("\\s+"); // check
+            	entities.add(translate(ss[0], Double.parseDouble(ss[1]), Double.parseDouble(ss[2])));
             }
             
         } catch (IOException e) {
@@ -97,6 +101,19 @@ public class LevelMap {
     		return c - 'A' + 36;
     	} else {
     		return 0;
+    	}
+    }
+    
+    /**
+     * Create an entity based on name
+     * @param name the name of the entity
+     * @param x the x coordinate
+     * @param y the y coordinate
+     */
+    private Entity translate(String name, double x, double y) {
+    	switch (name) {
+    		case "Monster": return new Monster(x,y);
+    		default: return null;
     	}
     }
     

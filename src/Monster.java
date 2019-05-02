@@ -4,18 +4,25 @@ import java.awt.*;
 /**
  * Represents a monster enemy
  */
-public class Monster implements Entity {
+public class Monster implements Entity, Animatable {
 	
 	private static final Image TEXTURE = TextureAtlas.getTextureAtlas().getTexture("monster");
+	private static final Image HURT    = TextureAtlas.getTextureAtlas().getTexture("hurt");
 	
 	private double x, y;
+	private int health;
+	private boolean isHurt;
+	
+	private GameState game; // for future use
 	
 	/**
 	 * Constructs a new Monster
 	 */
-	public Monster() {
-		x = 4.0;
-		y = 4.0;
+	public Monster(double x, double y) {
+		this.x = x;
+		this.y = y;
+		health = 3;
+		isHurt = false;
 	}
 	
 	/**
@@ -28,7 +35,8 @@ public class Monster implements Entity {
 		double dy = p.getPosY() - getY();
 		double r = Math.sqrt(dx*dx+dy*dy);
 		if (r < 0.4) r = 0.4;
-		return TEXTURE.getScaledInstance((int)(getWidth()/r), -1, Image.SCALE_FAST);
+		Image tex = isHurt ? HURT : TEXTURE;
+		return tex.getScaledInstance((int)(getWidth()/r), -1, Image.SCALE_FAST);
 	}
 	
 	/**
@@ -88,5 +96,32 @@ public class Monster implements Entity {
 	 */
 	public void registerEntity(GameState state) {
 		state.getGameLoop().registerRepeatedEvent(new EnemyAIEvent(this), 1);
+		game = state;
+	}
+	
+	/**
+	 * Checks whether the monster is dead
+	 * @return whether the monster is dead
+	 */
+	public boolean isDead() {
+		return health <= 0;
+	}
+	
+	/**
+	 * Reduce the monster's health by a certain amount
+	 * @param damage the amount to damage the monster by
+	 */
+	public void damage(int damage) {
+		health -= damage;
+		isHurt = true;
+		game.getGameLoop().registerFutureEvent(new AnimationUpdateEvent(this), 8);
+	}
+	
+	/**
+	 * Triggers the next frame of animation
+	 * @param state the current game state
+	 */
+	public void nextFrame(GameState state) {
+		isHurt = false;
 	}
 }

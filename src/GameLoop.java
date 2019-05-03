@@ -102,7 +102,10 @@ public class GameLoop {
         MapTile[][] map = state.getLevelMap().getMap();
         while (keys.hasNext()) {
             switch (keys.next()) {
-                case KeyEvent.VK_ESCAPE: System.exit(0); break;
+                case KeyEvent.VK_ESCAPE: {
+                	rend.toggleMenu();
+                	break;
+                }
                 case KeyEvent.VK_W: {
                 	double xNew = p.getPosX()+p.getDirX()*ms/1000.0;
                 	double yNew = p.getPosY()+p.getDirY()*ms/1000.0;
@@ -198,10 +201,18 @@ public class GameLoop {
     }
     
     /**
+     * Gets the distance to the wall in front
+     * @return the distance to the wall in front
+     */
+    public double getWallDistance() {
+    	return rend.getWallDistance();
+    }
+    
+    /**
      * Delays for a given amount of ms
      * @param ms the given amount of ms
      */
-    private void delay(long ms) {
+    public static void delay(long ms) {
         try {
             Thread.sleep(ms);
         } catch (InterruptedException e) {}

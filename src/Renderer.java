@@ -10,6 +10,8 @@ import java.util.*;
 public class Renderer {
     
     private BufferedImage surface, back;
+    private GameMenu menu;
+    private boolean inMenu;
     private double[] wallDistances;
     private int width, height;
     public static final double FOV = 0.9;
@@ -25,6 +27,8 @@ public class Renderer {
         surface = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         back    = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         wallDistances = new double[w];
+        menu = new GameMenu(new Dimension(w,h));
+        inMenu = false;
     }
     
     /**
@@ -160,6 +164,16 @@ public class Renderer {
         long memUsage = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         g.drawString("Memory usage: " + (memUsage >> 10) + " Kb", 50, 75);
         
+        if (inMenu) {
+	        g.setFont(g.getFont().deriveFont(Font.BOLD, 144.0f));
+	        g.setColor(Color.RED);
+	        HashMap<String, Dimension> options = menu.getOptions();
+	        for (String s : options.keySet()) {
+	        	Dimension d = options.get(s);
+	        	g.drawString(s, d.width, d.height);
+	        }
+        }
+        
         surface = back; // for double buffering
         
         g.dispose();
@@ -201,6 +215,14 @@ public class Renderer {
     }
     
     /**
+     * Returns the distance to the wall in front
+     * @return the distance to the wall in front
+     */
+    public double getWallDistance() {
+    	return wallDistances[width/2];
+    }
+    
+    /**
      * Draws text with a white background
      * @param g the graphics context
      * @param txt the text to display
@@ -216,5 +238,12 @@ public class Renderer {
     	g.fillRect(x, y, width, height);
     	g.setColor(c);
     	g.drawString(txt, x, y);
+    }
+    
+    /**
+     * Toggles the menu
+     */
+    public void toggleMenu() {
+    	inMenu = true;
     }
 }

@@ -6,6 +6,7 @@ public class BulletEvent extends GameEvent {
 	public void handle(GameState state, Duration dt) {
 		HashSet<Entity> entities = state.getLevelMap().getEntities();
 		Player p = state.getPlayer();
+		GameLoop loop = state.getGameLoop();
 		double dirX = p.getDirX();
 		double dirY = p.getDirY();
 		double x = p.getPosX();
@@ -14,8 +15,9 @@ public class BulletEvent extends GameEvent {
 		for (Entity e : entities) {
 			double ex = e.getX() - x;
 			double ey = e.getY() - y;
-			double dot = (dirX*ex+dirY*ey)/(mag*Math.sqrt(ex*ex+ey*ey));
-			if (dot > 0.98) {
+			double distance = Math.sqrt(ex*ex+ey*ey);
+			double dot = (dirX*ex+dirY*ey)/(mag*distance);
+			if (dot > 0.98 && distance < loop.getWallDistance()) {
 				e.damage(1);
 				if (e.isDead()) state.getGameLoop().queueEvent(new EntityCleanupEvent(e));
 			}

@@ -19,31 +19,26 @@ public class LevelMap {
      * @param filename the file to load from   
      */
     public LevelMap(String filename) {
-        try {
-            Scanner sc = new Scanner(new FileReader(filename));
-            
-            name = sc.nextLine();
-            width = sc.nextInt();
-            height = sc.nextInt();
-            locX = sc.nextInt();
-            locY = sc.nextInt();
-            sc.nextLine();
-            entities = new HashSet<Entity>();
-            map = new MapTile[height][width];
-            for (int i=0; i<height; i++) {
-            	String line = sc.nextLine();
-                for (int j=0; j<width; j++) {
-                    map[i][j] = MapTile.fromInt(translate(line.charAt(j)));
-                }
+        Scanner sc = new Scanner(getClass().getClassLoader().getResourceAsStream(filename));
+        
+        name = sc.nextLine();
+        width = sc.nextInt();
+        height = sc.nextInt();
+        locX = sc.nextInt();
+        locY = sc.nextInt();
+        sc.nextLine();
+        entities = new HashSet<Entity>();
+        map = new MapTile[height][width];
+        for (int i=0; i<height; i++) {
+        	String line = sc.nextLine();
+            for (int j=0; j<width; j++) {
+                map[i][j] = MapTile.fromInt(translate(line.charAt(j)));
             }
-            sc.nextLine(); // skip whitespace
-            while (sc.hasNextLine()) {
-            	String[] ss = sc.nextLine().split("\\s+"); // check
-            	entities.add(translate(ss[0], Double.parseDouble(ss[1]), Double.parseDouble(ss[2])));
-            }
-            
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+        sc.nextLine(); // skip whitespace
+        while (sc.hasNextLine()) {
+        	String[] ss = sc.nextLine().split("\\s+"); // check
+        	entities.add(translate(ss[0], Double.parseDouble(ss[1]), Double.parseDouble(ss[2])));
         }
     }
     

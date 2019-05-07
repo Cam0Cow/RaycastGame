@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.image.*;
 import java.awt.geom.*;
 import java.awt.font.*;
+import java.awt.event.*;
 import java.util.*;
 
 /**
@@ -15,6 +16,7 @@ public class Renderer {
     private double[] wallDistances;
     private int width, height;
     public static final double FOV = 0.9;
+    public static final long MENU_TIME_DELAY = 70; // in ms
     
     /**
      * Creates a new renderer with a given width and height
@@ -35,7 +37,7 @@ public class Renderer {
      * renders the given GameState to a BufferedImage
      * @param game the current GameState
      */
-    public void render(GameState game) {
+    public boolean render(GameState game) {
         Graphics2D g = back.createGraphics();
         g.setBackground(Color.BLUE.brighter());
         g.clearRect(0,0,width,height/2);
@@ -165,18 +167,30 @@ public class Renderer {
         g.drawString("Memory usage: " + (memUsage >> 10) + " Kb", 50, 75);
         
         if (inMenu) {
+        	KeyState ks = KeyState.getKeyState();
+        	g.setBackground(Color.BLACK);
+        	// g.clearRect(0,0,width,height);
 	        g.setFont(g.getFont().deriveFont(Font.BOLD, 144.0f));
 	        g.setColor(Color.RED);
-	        HashMap<String, Dimension> options = menu.getOptions();
-	        for (String s : options.keySet()) {
-	        	Dimension d = options.get(s);
-	        	g.drawString(s, d.width, d.height);
+	        FontMetrics fm = g.getFontMetrics();
+	        int d = height / 3; // (divided by menu choices + 1)
+	        String option1 = "Press Esc to return to Game";
+	        String option2 = "Press Q to quit";
+	        g.drawString(option1, (width-fm.stringWidth(option1))/2, d);
+	        g.drawString(option2, (width-fm.stringWidth(option2))/2, d*2);
+	        if (ks.isDown(KeyEvent.VK_ESCAPE)) {
+	        	inMenu = false;
+	        	ks.purge();
+	        	// GameLoop.delay(MENU_TIME_DELAY);
 	        }
+	        if (ks.isDown(KeyEvent.VK_Q)) return true;
         }
         
         surface = back; // for double buffering
         
         g.dispose();
+        
+        return false;
     }
     
     /**
@@ -244,6 +258,16 @@ public class Renderer {
      * Toggles the menu
      */
     public void toggleMenu() {
+    	// GameLoop.delay(MENU_TIME_DELAY);
     	inMenu = true;
+    	KeyState.getKeyState().purge();
+    }
+    
+    /**
+     * Checks whether the game should be paused
+     * @return whether the game should be paused
+     */
+    public boolean isPaused() {
+    	return inMenu;
     }
 }

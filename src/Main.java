@@ -14,5 +14,6 @@ public class Main {
         	game.getLevelMap().getLocY()+0.5,
         	-0.5,-1));
         gl.loop();
+        System.exit(0);
     }
 }

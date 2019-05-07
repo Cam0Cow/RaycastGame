@@ -71,23 +71,25 @@ public class GameLoop {
 		boolean done = false;
 		previousFrame = Instant.now().minus(Duration.ofMillis(1)); // not quite now
 		while (!done) {
-			Instant now = Instant.now();
-			Duration dt = Duration.between(previousFrame, now);
-			previousFrame = now;
-			state.getFPS().addFrame(dt.toMillis());
-            handleKeys(dt);
-            handleMouse();
-            handleFutureEvents();
-            handleRepeatedEvents();
-			while (!queue.isEmpty() && !disp.isFrameDone()) {
-				// System.out.println (queue.peek());
-				queue.poll().handle(state, dt);
+			if (!rend.isPaused()) {
+				Instant now = Instant.now();
+				Duration dt = Duration.between(previousFrame, now);
+				previousFrame = now;
+				state.getFPS().addFrame(dt.toMillis());
+	            handleKeys(dt);
+	            handleMouse();
+	            handleFutureEvents();
+	            handleRepeatedEvents();
+				while (!queue.isEmpty() && !disp.isFrameDone()) {
+					// System.out.println (queue.peek());
+					queue.poll().handle(state, dt);
+				}
+				frameNumber++;
 			}
 			while (!disp.isFrameDone());
             disp.resetFrameStatus();
-			rend.render(state);
+			done = rend.render(state);
             disp.show(rend);
-            frameNumber++;
 		}
 	}
     

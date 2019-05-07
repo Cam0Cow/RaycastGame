@@ -17,4 +17,9 @@ public interface Weapon {
 	 * @param loop the game loop, for timing purposes
 	 */
 	public void fire(GameLoop loop);
+	
+	/**
+	 * End the weapon's cooldown period
+	 */
+	public void endCooldown();
 }

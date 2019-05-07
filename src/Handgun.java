@@ -11,12 +11,14 @@ public class Handgun implements Weapon, Animatable {
 	public static final Image FIRED = Renderer.toBuf(TEXTURE).getSubimage(52,0,51,92).getScaledInstance(153,-1, Image.SCALE_FAST);
 	
 	private boolean fired;
+	private boolean inCooldownMode;
 	
 	/**
 	 * Constructs a new handgun
 	 */
 	public Handgun() {
 		fired = false;
+		inCooldownMode = false;
 	}
 	
 	/**
@@ -32,9 +34,13 @@ public class Handgun implements Weapon, Animatable {
 	 * @param loop the game loop
 	 */
 	public void fire(GameLoop loop) {
-		fired = true;
-		loop.queueEvent(new BulletEvent());
-		loop.registerFutureEvent(new AnimationUpdateEvent(this), 5);
+		if (!inCooldownMode) {
+			fired = true;
+			inCooldownMode = true;
+			loop.queueEvent(new BulletEvent());
+			loop.registerFutureEvent(new AnimationUpdateEvent(this), 5);
+			loop.registerFutureEvent(new WeaponCooldownEvent(this), 20);
+		}
 	}
 	
 	/**
@@ -43,5 +49,12 @@ public class Handgun implements Weapon, Animatable {
 	 */
 	public void nextFrame(GameState state) {
 		fired = false;
+	}
+	
+	/**
+	 * Called when the handgun's cooldown period is over
+	 */
+	public void endCooldown() {
+		inCooldownMode = false;
 	}
 }

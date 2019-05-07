@@ -79,6 +79,15 @@ public class KeyState implements KeyListener {
     		}
     	}
     }
+    
+    /**
+     * Removes all of the key presses that have been registered
+     * with the keyState. Useful for context switches (i.e. between menus)
+     */
+    public void purge() {
+    	keysDown.clear();
+    	queue.clear();
+    }
 	
 	/**
 	 * Triggered by the OS whena key is typed

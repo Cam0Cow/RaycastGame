@@ -11,7 +11,7 @@ public interface Entity {
 	 * @param viewer the player viewing the entity
 	 * @return the unclipped texture of the entity, scaled correctly
 	 */
-	public Image getUnclippedTexture(Player viewer);
+	public BufferedImage getUnclippedTexture(Player viewer);
 	
 	/**
 	 * Returns the x coordinate of the entity

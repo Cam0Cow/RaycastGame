@@ -30,13 +30,19 @@ public class Monster implements Entity, Animatable {
 	 * @param p the player that should see this enemy
 	 * @return the unclipped texture of the enemy
 	 */
-	public Image getUnclippedTexture(Player p) {
+	public BufferedImage getUnclippedTexture(Player p) {
 		double dx = p.getPosX() - getX();
 		double dy = p.getPosY() - getY();
 		double r = Math.sqrt(dx*dx+dy*dy);
 		if (r < 0.4) r = 0.4;
 		Image tex = isHurt ? HURT : TEXTURE;
-		return tex.getScaledInstance((int)(getWidth()/r), -1, Image.SCALE_FAST);
+        double w = getWidth()/r;
+        double h = w * (tex.getHeight(null)/(double)tex.getWidth(null));
+		BufferedImage img = new BufferedImage((int)w, (int)h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = img.createGraphics();
+        g.drawImage(tex, 0, 0, (int)w, (int)h, null);
+        g.dispose();
+        return img;
 	}
 	
 	/**

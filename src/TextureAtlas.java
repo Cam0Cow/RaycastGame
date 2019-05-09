@@ -2,6 +2,9 @@ import java.util.*;
 import java.awt.*;
 import javax.imageio.*;
 import java.io.*;
+import java.awt.image.*;
+import java.awt.*;
+import javax.swing.*;
 
 /**
  * A structure that stores all of the game textures
@@ -11,7 +14,7 @@ public class TextureAtlas {
 	// should be loaded in from a file!
 	private HashMap<String, Image> map;
 	
-	private static final String textureDir = "..\\textures";
+	private static final String textureDir = "textures";
 	private static final String indexPath = "index.dat";
 	
 	private static TextureAtlas ta;
@@ -22,14 +25,9 @@ public class TextureAtlas {
 	 */
 	private TextureAtlas() {
 		map = new HashMap<String, Image>();
-		try {
-			File index = new File(textureDir, indexPath);
-			Scanner sc = new Scanner(index);
-			while (sc.hasNextLine()) {
-				map.put(sc.next().trim(), ImageIO.read(new File(textureDir, sc.next().trim())));
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		Scanner sc = new Scanner(getClass().getClassLoader().getResourceAsStream(indexPath));
+		while (sc.hasNextLine()) {
+			map.put(sc.next().trim(), new ImageIcon(getClass().getResource(sc.next().trim())).getImage());
 		}
 	}
 	

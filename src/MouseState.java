@@ -12,6 +12,7 @@ public class MouseState implements MouseMotionListener, MouseListener {
 	private boolean hasFired;
 	private int xOrigin, yOrigin;
 	private Robot robot;
+	private boolean frozen;
 	
 	/**
 	 * Constructs a new mouse state given the screen size
@@ -19,6 +20,7 @@ public class MouseState implements MouseMotionListener, MouseListener {
 	 */
 	public MouseState(Dimension screenSize) {
 		deltaAngle = 0.0;
+		hasFired = frozen = false;
 		xOrigin = screenSize.width / 2;
 		yOrigin = screenSize.height / 2;
 		multiplier = 1.0 / xOrigin;
@@ -36,7 +38,7 @@ public class MouseState implements MouseMotionListener, MouseListener {
 	 */
 	public void mouseMoved(MouseEvent e) {
 		int x = e.getXOnScreen();
-		deltaAngle += (x - xOrigin) * multiplier;
+		if (!frozen) deltaAngle += (x - xOrigin) * multiplier;
 		robot.mouseMove(xOrigin, yOrigin);
 	}
 	
@@ -75,7 +77,7 @@ public class MouseState implements MouseMotionListener, MouseListener {
 	 * @param e the mouse event
 	 */
 	public void mousePressed(MouseEvent e) {
-		if (e.getButton() == MouseEvent.BUTTON1) {
+		if (!frozen && e.getButton() == MouseEvent.BUTTON1) {
 			hasFired = true;
 		}
 	}
@@ -97,5 +99,19 @@ public class MouseState implements MouseMotionListener, MouseListener {
 		boolean b = hasFired;
 		hasFired = false;
 		return b;
+	}
+	
+	/**
+	 * Tells the mouse state to ignore any new mouse events
+	 */
+	public void freeze() {
+		frozen = true;
+	}
+	
+	/**
+	 * Tells the mouse state to start accepting new mouse events
+	 */
+	public void unfreeze() {
+		frozen = false;
 	}
 }

@@ -7,6 +7,8 @@ public class Player {
     private double dirX, dirY;
     private double posX, posY;
     
+    private int health;
+    
     private double speed;
     
     private Weapon weapon;
@@ -38,6 +40,7 @@ public class Player {
         dirY /= mag;
         
         weapon = new Handgun();
+        health = 10;
     }
     
     /**
@@ -118,5 +121,30 @@ public class Player {
      */
     public Weapon getWeapon() {
     	return weapon;
+    }
+    
+    /**
+     * Damages the player
+     * @param damage the amount of health points to take away
+     */
+    public void damage(int damage) {
+    	health -= damage;
+    	System.out.println (health);
+    }
+    
+    /**
+     * Checks whether the player is dead
+     * @return whether the player is dead
+     */
+    public boolean isDead() {
+    	return health <= 0;
+    }
+    
+    /**
+     * Returns the player's health
+     * @return the player's health
+     */
+    public int getHealth() {
+    	return health;
     }
 }

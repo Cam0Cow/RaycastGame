@@ -11,7 +11,7 @@ import java.util.*;
 public class Renderer {
     
     private BufferedImage surface, back;
-    private GameMenu menu;
+    private GameState state;
     private boolean inMenu;
     private double[] wallDistances;
     private int width, height;
@@ -29,8 +29,8 @@ public class Renderer {
         surface = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         back    = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         wallDistances = new double[w];
-        menu = new GameMenu(new Dimension(w,h));
         inMenu = false;
+        state = null;
     }
     
     /**
@@ -38,6 +38,7 @@ public class Renderer {
      * @param game the current GameState
      */
     public boolean render(GameState game) {
+    	state = game;
         Graphics2D g = back.createGraphics();
         g.setBackground(Color.BLUE.brighter());
         g.clearRect(0,0,width,height/2);
@@ -173,14 +174,21 @@ public class Renderer {
 	        g.setFont(g.getFont().deriveFont(Font.BOLD, 144.0f));
 	        g.setColor(Color.RED);
 	        FontMetrics fm = g.getFontMetrics();
-	        int d = height / 3; // (divided by menu choices + 1)
-	        String option1 = "Press Esc to return to Game";
-	        String option2 = "Press Q to quit";
-	        g.drawString(option1, (width-fm.stringWidth(option1))/2, d);
-	        g.drawString(option2, (width-fm.stringWidth(option2))/2, d*2);
+	        LinkedList<String> options = new LinkedList<String>();
+	        options.add("Press Esc to return to Game");
+	        options.add("Press H for Help");
+	        options.add("Press Q to Quit");
+	        int d = height / (options.size()+1);
+	        for (int i=1; i<=options.size(); i++) {
+	        	int sWidth = fm.stringWidth(options.get(i-1));
+	        	int x = (width-sWidth)/2;
+	        	int y = d*i;
+	        	g.drawString(options.get(i-1), x, y);
+	        }
 	        if (ks.isDown(KeyEvent.VK_ESCAPE)) {
 	        	inMenu = false;
 	        	ks.purge();
+	        	game.getGameLoop().getMouseState().unfreeze();
 	        	// GameLoop.delay(MENU_TIME_DELAY);
 	        }
 	        if (ks.isDown(KeyEvent.VK_Q)) return true;
@@ -261,6 +269,7 @@ public class Renderer {
     	// GameLoop.delay(MENU_TIME_DELAY);
     	inMenu = true;
     	KeyState.getKeyState().purge();
+    	state.getGameLoop().getMouseState().freeze();
     }
     
     /**

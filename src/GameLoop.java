@@ -70,6 +70,9 @@ public class GameLoop {
 	public void loop() {
 		boolean done = false;
 		previousFrame = Instant.now().minus(Duration.ofMillis(1)); // not quite now
+		
+		registerRepeatedEvent(new DamagePlayerEvent(), 30); // Should this be here?
+		
 		while (!done) {
 			if (!rend.isPaused()) {
 				Instant now = Instant.now();
@@ -208,6 +211,14 @@ public class GameLoop {
      */
     public double getWallDistance() {
     	return rend.getWallDistance();
+    }
+    
+    /**
+     * Returns the Game Loop's Mouse State
+     * @return the Game Loop's Mouse State
+     */
+    public MouseState getMouseState() {
+    	return mouseState;
     }
     
     /**

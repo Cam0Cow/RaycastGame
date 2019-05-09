@@ -21,7 +21,7 @@ public class Monster implements Entity, Animatable {
 	public Monster(double x, double y) {
 		this.x = x;
 		this.y = y;
-		health = 3;
+		health = 5;
 		isHurt = false;
 	}
 	

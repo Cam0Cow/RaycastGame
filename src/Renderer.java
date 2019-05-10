@@ -13,9 +13,13 @@ public class Renderer {
     private BufferedImage surface, back;
     private GameState state;
     private boolean inMenu;
+    private boolean inHelp;
+    private boolean inBackstory;
+    private boolean gameOver;
     private double[] wallDistances;
     private int width, height;
     public static final double FOV = 0.9;
+    public static final Dimension HEALTH_BAR_SIZE = new Dimension(200,30);
     public static final long MENU_TIME_DELAY = 70; // in ms
     
     /**
@@ -29,7 +33,10 @@ public class Renderer {
         surface = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         back    = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         wallDistances = new double[w];
-        inMenu = false;
+        inMenu = true;
+        inHelp = false;
+        inBackstory = false;
+        gameOver = false;
         state = null;
     }
     
@@ -40,7 +47,7 @@ public class Renderer {
     public boolean render(GameState game) {
     	state = game;
         Graphics2D g = back.createGraphics();
-        g.setBackground(Color.BLUE.brighter());
+        g.setBackground(new Color(130, 171, 237));
         g.clearRect(0,0,width,height/2);
         g.setBackground(Color.GRAY);
         g.clearRect(0,height/2,width,height/2);
@@ -158,40 +165,114 @@ public class Renderer {
         	// g.drawString("If Green, enemy should be visible", 50, 150);
         }
         
+        // draw weapon to screen
         Image weapon = p.getWeapon().getTexture();
         g.drawImage(weapon, width/2, height-weapon.getHeight(null), null);
         
+        // draw healthbar
+        int pHealth = p.getHealth();
+        if (pHealth < 0) pHealth = 0;
+        int barWidth = HEALTH_BAR_SIZE.width / 10 * pHealth;
+        g.setColor(Color.BLACK);
+        g.fillRect(width/2-HEALTH_BAR_SIZE.width-20,height-HEALTH_BAR_SIZE.height-20,HEALTH_BAR_SIZE.width,HEALTH_BAR_SIZE.height);
+        g.setColor(Color.RED);
+        g.fillRect(width/2-HEALTH_BAR_SIZE.width-20,height-HEALTH_BAR_SIZE.height-20,barWidth,HEALTH_BAR_SIZE.height);
+        
+        // draw debug information
         g.setColor(Color.GRAY);
         g.drawString(""+game.getFPS().getFPS()+" FPS", 50, 25);
         g.drawString(String.format("XY: %.2f / %.2f", posX, posY), 50, 50);
         long memUsage = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         g.drawString("Memory usage: " + (memUsage >> 10) + " Kb", 50, 75);
         
+        // draw the menu
         if (inMenu) {
         	KeyState ks = KeyState.getKeyState();
         	g.setBackground(Color.BLACK);
-        	// g.clearRect(0,0,width,height);
-	        g.setFont(g.getFont().deriveFont(Font.BOLD, 144.0f));
+        	g.clearRect(0,0,width,height);
 	        g.setColor(Color.RED);
+	        g.setFont(g.getFont().deriveFont(Font.BOLD, 72.0f));
 	        FontMetrics fm = g.getFontMetrics();
-	        LinkedList<String> options = new LinkedList<String>();
-	        options.add("Press Esc to return to Game");
-	        options.add("Press H for Help");
-	        options.add("Press Q to Quit");
-	        int d = height / (options.size()+1);
-	        for (int i=1; i<=options.size(); i++) {
-	        	int sWidth = fm.stringWidth(options.get(i-1));
-	        	int x = (width-sWidth)/2;
-	        	int y = d*i;
-	        	g.drawString(options.get(i-1), x, y);
+	        
+	        // draw the help screen if requested
+	        if (inHelp) {
+	        	LinkedList<String> options = new LinkedList<String>();
+		        options.add("Use WASD to move forwards, to the left,");
+		        options.add("backwards, and to the right, respectively.");
+		        options.add("Use the mouse or arrow keys to look left and right");
+		        options.add("Shoot the enemies by left clicking with the mouse");
+		        options.add("If the enemies get too close, they will damage you!");
+		        int d = height / (options.size()+1);
+		        for (int i=1; i<=options.size(); i++) {
+		        	int sWidth = fm.stringWidth(options.get(i-1));
+		        	int x = (width-sWidth)/2;
+		        	int y = d*i;
+		        	g.drawString(options.get(i-1), x, y);
+		        }
+		        
+	        	if (ks.isDown(KeyEvent.VK_ESCAPE)) {
+	        		inHelp = false;
+	        		ks.purge();
+	        	}
+	        } else if (inBackstory) {
+	        	LinkedList<String> options = new LinkedList<String>();
+		        options.add("You must find the treasure and escape the maze");
+		        options.add("The radioactive guards will try to stop you");
+		        options.add("Let no one be between you and the booty");
+		        options.add("Try not to die");
+		        options.add("The booty beckons");
+		        int d = height / (options.size()+1);
+		        for (int i=1; i<=options.size(); i++) {
+		        	int sWidth = fm.stringWidth(options.get(i-1));
+		        	int x = (width-sWidth)/2;
+		        	int y = d*i;
+		        	g.drawString(options.get(i-1), x, y);
+		        }
+		        
+		        if (ks.isDown(KeyEvent.VK_ESCAPE)) {
+		        	inBackstory = false;
+		        	ks.purge();
+		        }
+	        } else {
+		        LinkedList<String> options = new LinkedList<String>();
+		        options.add("Press Esc to return to Game");
+		        options.add("Press B for Backstory");
+		        options.add("Press H for Help");
+		        options.add("Press Q to Quit");
+		        int d = height / (options.size()+1);
+		        for (int i=1; i<=options.size(); i++) {
+		        	int sWidth = fm.stringWidth(options.get(i-1));
+		        	int x = (width-sWidth)/2;
+		        	int y = d*i;
+		        	g.drawString(options.get(i-1), x, y);
+		        }
+		        if (ks.isDown(KeyEvent.VK_ESCAPE)) {
+		        	inMenu = false;
+		        	ks.purge();
+		        	game.getGameLoop().getMouseState().unfreeze();
+		        }
+		        if (ks.isDown(KeyEvent.VK_H)) {
+		        	inHelp = true;
+		        	ks.purge();
+		        }
+		        if (ks.isDown(KeyEvent.VK_B)) {
+		        	inBackstory = true;
+		        	ks.purge();
+		        }
+		        if (ks.isDown(KeyEvent.VK_Q)) return true;
 	        }
-	        if (ks.isDown(KeyEvent.VK_ESCAPE)) {
-	        	inMenu = false;
-	        	ks.purge();
-	        	game.getGameLoop().getMouseState().unfreeze();
-	        	// GameLoop.delay(MENU_TIME_DELAY);
-	        }
-	        if (ks.isDown(KeyEvent.VK_Q)) return true;
+        }
+        
+        if (gameOver) {
+        	KeyState ks = KeyState.getKeyState();
+        	g.setBackground(Color.BLACK);
+        	g.clearRect(0,0,width,height);
+	        g.setColor(Color.RED);
+	        g.setFont(g.getFont().deriveFont(Font.BOLD, 144.0f));
+	        FontMetrics fm = g.getFontMetrics();
+	        g.drawString("GAME OVER", (width-fm.stringWidth("GAME OVER"))/2, (height-fm.getAscent())/2);
+	        
+	        if (ks.getNumKeysDown() > 0) return true;
         }
         
         surface = back; // for double buffering
@@ -278,5 +359,13 @@ public class Renderer {
      */
     public boolean isPaused() {
     	return inMenu;
+    }
+    
+    /**
+     * Called when the player dies
+     */
+    public void setGameOver() {
+    	gameOver = true;
+    	KeyState.getKeyState().purge();
     }
 }

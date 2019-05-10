@@ -6,12 +6,14 @@ import java.awt.Color;
 public enum MapTile {
     NOTHING,
     WALL_GREEN,
-    WALL_RED;
+    WALL_RED,
+    WALL_BLUE;
     
     private static final MapTile[] indices = MapTile.values();
     private static final Color[] colors = {
     	Color.GREEN,
-    	Color.RED
+    	Color.RED,
+    	Color.BLUE
     };
     
     /**

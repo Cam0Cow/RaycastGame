@@ -71,7 +71,7 @@ public class GameLoop {
 		boolean done = false;
 		previousFrame = Instant.now().minus(Duration.ofMillis(1)); // not quite now
 		
-		registerRepeatedEvent(new DamagePlayerEvent(), 30); // Should this be here?
+		registerRepeatedEvent(new DamagePlayerEvent(), 60); // Should this be here?
 		
 		while (!done) {
 			if (!rend.isPaused()) {
@@ -88,6 +88,7 @@ public class GameLoop {
 					queue.poll().handle(state, dt);
 				}
 				frameNumber++;
+				if (state.getPlayer().isDead()) rend.setGameOver();
 			}
 			while (!disp.isFrameDone());
             disp.resetFrameStatus();

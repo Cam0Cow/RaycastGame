@@ -57,4 +57,13 @@ public class Handgun implements Weapon, Animatable {
 	public void endCooldown() {
 		inCooldownMode = false;
 	}
+	
+	/**
+	 * Returns how much damage the weapon should have a certain distance away
+	 * @param distance the distance to the entity
+	 * @return the effective damage
+	 */
+	public int getDamageAtRange(double distance) {
+		return distance > 9 ? 0 : 1;
+	}
 }

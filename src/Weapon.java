@@ -22,4 +22,11 @@ public interface Weapon {
 	 * End the weapon's cooldown period
 	 */
 	public void endCooldown();
+	
+	/**
+	 * Returns how much damage the weapon should have a certain distance away
+	 * @param distance the distance to the entity
+	 * @return the effective damage
+	 */
+	public int getDamageAtRange(double distance);
 }

@@ -129,7 +129,6 @@ public class Player {
      */
     public void damage(int damage) {
     	health -= damage;
-    	System.out.println (health);
     }
     
     /**

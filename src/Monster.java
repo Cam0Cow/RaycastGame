@@ -119,8 +119,10 @@ public class Monster implements Entity, Animatable {
 	 */
 	public void damage(int damage) {
 		health -= damage;
-		isHurt = true;
-		game.getGameLoop().registerFutureEvent(new AnimationUpdateEvent(this), 8);
+		if (damage > 0) {
+			isHurt = true;
+			game.getGameLoop().registerFutureEvent(new AnimationUpdateEvent(this), 8);
+		}
 	}
 	
 	/**

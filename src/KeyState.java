@@ -81,6 +81,14 @@ public class KeyState implements KeyListener {
     }
     
     /**
+     * Return the number of keys being held down
+     */
+    public int getNumKeysDown() {
+    	flushQueue();
+    	return keysDown.size();
+    }
+    
+    /**
      * Removes all of the key presses that have been registered
      * with the keyState. Useful for context switches (i.e. between menus)
      */

@@ -53,6 +53,14 @@ public class GameLoop {
 	public void registerRepeatedEvent(GameEvent ge, int frameDelay) {
 		registeredEvents.put(ge, frameDelay);
 	}
+    
+    /**
+     * Removes a previously registered game event from occuring again
+     * @param ge the game event  
+     */
+    public void unregisterRepeatedEvent(GameEvent ge) {
+        registeredEvents.remove(ge);
+    }
 	
 	/**
 	 * Registers a game event that should be triggered only once, in a certain number of frames

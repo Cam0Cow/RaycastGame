@@ -67,4 +67,10 @@ public interface Entity {
 	 * @param damage how much to hurt the monster
 	 */
 	public void damage(int damage);
+    
+    /**
+     * Called when the entity has been killed
+     * Used to give it a chance to unregister repeated events 
+     */
+    public void kill();
 }

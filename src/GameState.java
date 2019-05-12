@@ -14,6 +14,7 @@ public class GameState {
     private KeyState keyState;
     private FPS fps;
     private GameLoop loop;
+    private MusicPlayer musicPlayer;
     
     /**
      * Constructs a new game state if necessary  
@@ -22,6 +23,7 @@ public class GameState {
         player = new Player();
         keyState = KeyState.getKeyState();
         fps = new FPS();
+        musicPlayer = new MusicPlayer();
     }
     
     /**
@@ -85,5 +87,13 @@ public class GameState {
      */
     public FPS getFPS() {
     	return fps;
+    }
+    
+    /**
+     * Returns the music player
+     * @return the music player   
+     */
+    public MusicPlayer getMusicPlayer() {
+        return musicPlayer;
     }
 }

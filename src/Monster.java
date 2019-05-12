@@ -12,6 +12,9 @@ public class Monster implements Entity, Animatable {
 	private double x, y;
 	private int health;
 	private boolean isHurt;
+    
+    private EnemyAIEvent eaie;
+    private DamagePlayerEvent dpe;
 	
 	private GameState game; // for future use
 	
@@ -50,7 +53,7 @@ public class Monster implements Entity, Animatable {
 	 * @return the width of the texture
 	 */
 	public double getWidth() {
-		return 400;
+		return 300;
 	}
 	
 	/**
@@ -101,8 +104,10 @@ public class Monster implements Entity, Animatable {
 	 * @param state the given game state
 	 */
 	public void registerEntity(GameState state) {
-		state.getGameLoop().registerRepeatedEvent(new EnemyAIEvent(this), 1);
-        state.getGameLoop().registerRepeatedEvent(new DamagePlayerEvent(this),60);
+        eaie = new EnemyAIEvent(this);
+        dpe = new DamagePlayerEvent(this);
+		state.getGameLoop().registerRepeatedEvent(eaie, 1);
+        state.getGameLoop().registerRepeatedEvent(dpe,60);
 		game = state;
 	}
 	
@@ -125,6 +130,11 @@ public class Monster implements Entity, Animatable {
 			game.getGameLoop().registerFutureEvent(new AnimationUpdateEvent(this), 8);
 		}
 	}
+    
+    public void kill() {
+        game.getGameLoop().unregisterRepeatedEvent(eaie);
+        game.getGameLoop().unregisterRepeatedEvent(dpe);
+    }
 	
 	/**
 	 * Triggers the next frame of animation

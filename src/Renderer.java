@@ -250,6 +250,8 @@ public class Renderer {
 		        	inMenu = false;
 		        	ks.purge();
 		        	game.getGameLoop().getMouseState().unfreeze();
+                    game.getMusicPlayer().play();
+                    System.out.println("Just left menu");
 		        }
 		        if (ks.isDown(KeyEvent.VK_H)) {
 		        	inHelp = true;
@@ -351,6 +353,7 @@ public class Renderer {
     	inMenu = true;
     	KeyState.getKeyState().purge();
     	state.getGameLoop().getMouseState().freeze();
+        state.getMusicPlayer().pause();
     }
     
     /**

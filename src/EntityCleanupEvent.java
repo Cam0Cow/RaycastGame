@@ -22,5 +22,6 @@ public class EntityCleanupEvent extends GameEvent {
 	 */
 	public void handle(GameState state, Duration dt) {
 		state.getLevelMap().getEntities().remove(e);
+        e.kill();
 	}
 }

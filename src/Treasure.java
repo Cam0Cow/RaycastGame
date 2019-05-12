@@ -112,6 +112,12 @@ public class Treasure implements Entity {
 		double dy = p.getPosY() - y;
 		return Math.sqrt(dx*dx+dy*dy);
 	}
+    
+    /**
+     * Called when the treasure has been "killed"
+     * Shouldn't happen
+     */
+    public void kill() {}
 	
 	
 }

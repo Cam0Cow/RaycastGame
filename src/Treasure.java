@@ -1,36 +1,51 @@
 import java.awt.*;
 import java.awt.image.*;
 
+/**
+ * Represents a collectable treasure
+ */
 public class Treasure implements Entity {
 	
 	private double x, y;
 	public static final Image TEXTURE = TextureAtlas.getTextureAtlas().getTexture("treasure");
 	
+    /**
+     * Constructs a new treasure
+     * @param x the x position
+     * @param y the y position
+     */
 	public Treasure(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}
 	
+    /**
+     * Damages the treasure--which can't be done
+     * @param damage unused
+     */
 	public void damage(int damage) {
 		// The treasure can't be damaged
 	}
 	
+    /**
+     * Checks whether the treasure is dead--it's never dead
+     */
 	public boolean isDead() {
 		return false;
 	}
 	
+    /**
+     * Registers the treasure with the game state
+     * @param state the current game state  
+     */
 	public void registerEntity(GameState state) {
 		// TODO
 	}
 
 	/**
-	 * Method getUnclippedTexture
-	 *
-	 *
-	 * @param viewer
-	 *
-	 * @return
-	 *
+	 * Resizes the treasure texture to be the correct size on screen
+	 * @param viewer the viewing player
+	 * @return the treasure's texture
 	 */
 	public BufferedImage getUnclippedTexture(Player viewer) {
 		double r = getDistance(viewer);
@@ -44,68 +59,49 @@ public class Treasure implements Entity {
 	}
 
 	/**
-	 * Method getX
-	 *
-	 *
-	 * @return
-	 *
+	 * Returns the treasure's x position
+	 * @return the treasure's x position
 	 */
 	public double getX() {
 		return x;
 	}
 
 	/**
-	 * Method getY
-	 *
-	 *
-	 * @return
-	 *
+	 * Returns the treasure's y position
+	 * @return the treasure's y position
 	 */
 	public double getY() {
 		return y;
 	}
 
 	/**
-	 * Method getWidth
-	 *
-	 *
-	 * @return
-	 *
+	 * Returns the treasure's width
+	 * @return the treasure's width
 	 */
 	public double getWidth() {
 		return 400;
 	}
 
 	/**
-	 * Method setX
-	 *
-	 *
-	 * @param x
-	 *
+	 * Sets the treasure's x postion
+	 * @param x the new x position
 	 */
 	public void setX(double x) {
 		this.x = x;
 	}
 
 	/**
-	 * Method setY
-	 *
-	 *
-	 * @param y
-	 *
+	 * Sets the treasure's y postion
+	 * @param y the new y position
 	 */
 	public void setY(double y) {
 		this.y = y;
 	}
 
 	/**
-	 * Method getDistance
-	 *
-	 *
-	 * @param p
-	 *
-	 * @return
-	 *
+	 * Gets the distance between the player and the treasure
+	 * @param p the given player
+	 * @return the distance between the player and the treasure
 	 */
 	public double getDistance(Player p) {
 		double dx = p.getPosX() - x;
@@ -118,6 +114,5 @@ public class Treasure implements Entity {
      * Shouldn't happen
      */
     public void kill() {}
-	
 	
 }

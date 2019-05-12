@@ -1,6 +1,9 @@
 import javax.sound.sampled.*;
 import java.io.*;
 
+/**
+ * Represents a class that can play music from a file
+ */
 public class MusicPlayer {
     
     private static final String FILENAME = "music.wav";
@@ -9,17 +12,19 @@ public class MusicPlayer {
     private boolean isPlaying;
     private long time;
     
+    /**
+     * Constructs a new music player 
+     */
     public MusicPlayer() {
-        try {
-            loadStuff();
-            time = 0L;
-            isPlaying = false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
+        loadStuff();
+        time = 0L;
+        isPlaying = false;
+        
     }
     
+    /**
+     * Handles initialization for various audio things   
+     */
     private void loadStuff() {
         try {
             BufferedInputStream bis = new BufferedInputStream(getClass().getClassLoader().getResourceAsStream(FILENAME));
@@ -33,6 +38,9 @@ public class MusicPlayer {
         }
     }
     
+    /**
+     * Plays or resumes the audio playback   
+     */
     public void play() {
         if (!isPlaying) {
             clip.close();
@@ -40,16 +48,17 @@ public class MusicPlayer {
             clip.setMicrosecondPosition(time);
             clip.start();
             isPlaying = true;
-            System.out.println("Playing");
         }
     }
     
+    /**
+     * Pauses the audio playback   
+     */
     public void pause() {
         if (isPlaying) {
             time = clip.getMicrosecondPosition();
             clip.stop();
             isPlaying = false;
-            System.out.println("Pausing");
         }
     }
 }

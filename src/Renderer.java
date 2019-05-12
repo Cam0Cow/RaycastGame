@@ -13,6 +13,7 @@ public class Renderer {
     private BufferedImage surface, back;
     private GameState state;
     private boolean inMenu;
+    private boolean initialMenu;
     private boolean inHelp;
     private boolean inBackstory;
     private boolean gameOver;
@@ -34,6 +35,7 @@ public class Renderer {
         back    = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         wallDistances = new double[w];
         inMenu = true;
+        initialMenu = true;
         inHelp = false;
         inBackstory = false;
         gameOver = false;
@@ -235,7 +237,7 @@ public class Renderer {
 		        }
 	        } else {
 		        LinkedList<String> options = new LinkedList<String>();
-		        options.add("Press Esc to return to Game");
+		        options.add("Press Esc to "+(initialMenu?"begin":"resume")+" Game");
 		        options.add("Press B for Backstory");
 		        options.add("Press H for Help");
 		        options.add("Press Q to Quit");
@@ -251,7 +253,7 @@ public class Renderer {
 		        	ks.purge();
 		        	game.getGameLoop().getMouseState().unfreeze();
                     game.getMusicPlayer().play();
-                    System.out.println("Just left menu");
+                    initialMenu = false;
 		        }
 		        if (ks.isDown(KeyEvent.VK_H)) {
 		        	inHelp = true;
@@ -266,9 +268,14 @@ public class Renderer {
         }
         
         if (gameOver) {
-        	KeyState ks = KeyState.getKeyState();
+            /*
+            RescaleOp ro = new RescaleOp(new float[] {-1.0f, -1.0f, -1.0f, 0.1f}, new float[] {0.0f, 0.0f, 0.0f, 0.0f}, null);
+            surface = ro.filter(surface, null);
+            System.out.println("stuff");*/
+        	
+            KeyState ks = KeyState.getKeyState();
         	g.setBackground(Color.BLACK);
-        	g.clearRect(0,0,width,height);
+        	//g.clearRect(0,0,width,height);
 	        g.setColor(Color.RED);
 	        g.setFont(g.getFont().deriveFont(Font.BOLD, 144.0f));
 	        FontMetrics fm = g.getFontMetrics();

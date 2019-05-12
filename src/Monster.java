@@ -131,6 +131,9 @@ public class Monster implements Entity, Animatable {
 		}
 	}
     
+    /**
+     * Unregisters the monster's events upon death
+     */    
     public void kill() {
         game.getGameLoop().unregisterRepeatedEvent(eaie);
         game.getGameLoop().unregisterRepeatedEvent(dpe);

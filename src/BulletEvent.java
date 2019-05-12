@@ -1,8 +1,16 @@
 import java.time.*;
 import java.util.*;
 
+/**
+ * Represents the firing of a bullet
+ */
 public class BulletEvent extends GameEvent {
 	
+    /**
+     * Handles the bullet event
+     * @param state the current game state
+     * @param dt the frame time
+     */
 	public void handle(GameState state, Duration dt) {
 		HashSet<Entity> entities = state.getLevelMap().getEntities();
 		Player p = state.getPlayer();

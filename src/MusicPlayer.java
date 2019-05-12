@@ -30,7 +30,7 @@ public class MusicPlayer {
             BufferedInputStream bis = new BufferedInputStream(getClass().getClassLoader().getResourceAsStream(FILENAME));
             ais = AudioSystem.getAudioInputStream(bis);
             clip = AudioSystem.getClip();
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
+            //clip.loop(Clip.LOOP_CONTINUOUSLY);
             clip.open(ais);
         } catch (Exception e) {
             e.printStackTrace();
@@ -46,7 +46,7 @@ public class MusicPlayer {
             clip.close();
             loadStuff();
             clip.setMicrosecondPosition(time);
-            clip.start();
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
             isPlaying = true;
         }
     }

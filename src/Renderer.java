@@ -191,7 +191,7 @@ public class Renderer {
         	g.setBackground(Color.BLACK);
         	g.clearRect(0,0,width,height);
 	        g.setColor(Color.RED);
-	        g.setFont(g.getFont().deriveFont(Font.BOLD, 72.0f));
+	        g.setFont(g.getFont().deriveFont(Font.BOLD, 0.0375f*width));
 	        FontMetrics fm = g.getFontMetrics();
 	        
 	        // draw the help screen if requested

@@ -108,6 +108,7 @@ public class LevelMap {
     private Entity translate(String name, double x, double y) {
     	switch (name) {
     		case "Monster": return new Monster(x,y);
+            case "Treasure": return new Treasure(x,y);
     		default: return null;
     	}
     }

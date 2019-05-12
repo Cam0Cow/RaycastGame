@@ -102,6 +102,7 @@ public class Monster implements Entity, Animatable {
 	 */
 	public void registerEntity(GameState state) {
 		state.getGameLoop().registerRepeatedEvent(new EnemyAIEvent(this), 1);
+        state.getGameLoop().registerRepeatedEvent(new DamagePlayerEvent(this),60);
 		game = state;
 	}
 	

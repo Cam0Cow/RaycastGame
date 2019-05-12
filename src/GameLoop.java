@@ -71,8 +71,6 @@ public class GameLoop {
 		boolean done = false;
 		previousFrame = Instant.now().minus(Duration.ofMillis(1)); // not quite now
 		
-		registerRepeatedEvent(new DamagePlayerEvent(), 60); // Should this be here?
-		
 		while (!done) {
 			if (!rend.isPaused()) {
 				Instant now = Instant.now();

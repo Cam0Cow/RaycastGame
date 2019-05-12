@@ -13,6 +13,7 @@ Level One
 111000001101
 111111111111
 
-Monster 6 1
-Monster 1 5
-Monster 5 4
+Monster  6 1
+Monster  1 5
+Monster  5 4
+Treasure 5 5

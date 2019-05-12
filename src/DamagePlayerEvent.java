@@ -3,11 +3,14 @@ import java.util.*;
 
 public class DamagePlayerEvent extends GameEvent {
 	
+    private Entity e;
+    
+    public DamagePlayerEvent(Entity e) {
+        this.e = e;
+    }
+    
 	public void handle(GameState state, Duration dt) {
 		Player p = state.getPlayer();
-		Set<Entity> entities = state.getLevelMap().getEntities();
-		for (Entity e : entities) {
-			if (e.getDistance(p) < 1.5) p.damage(1);
-		}
+	    if (e.getDistance(p) < 1.1) p.damage(1);
 	}
 }

@@ -128,6 +128,7 @@ public class Monster implements Entity, Animatable {
 		if (damage > 0) {
 			isHurt = true;
 			game.getGameLoop().registerFutureEvent(new AnimationUpdateEvent(this), 8);
+            AudioLibrary.getAudioLibrary().play("monster_hurt");
 		}
 	}
     

@@ -7,13 +7,17 @@ public enum MapTile {
     NOTHING,
     WALL_GREEN,
     WALL_RED,
-    WALL_BLUE;
+    WALL_BLUE,
+    WALL_YELLOW,
+    WALL_ORANGE;
     
     private static final MapTile[] indices = MapTile.values();
     private static final Color[] colors = {
     	Color.GREEN,
     	Color.RED,
-    	Color.BLUE
+    	Color.BLUE,
+        Color.YELLOW,
+        Color.ORANGE
     };
     
     /**

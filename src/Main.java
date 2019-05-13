@@ -15,7 +15,7 @@ public class Main {
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         Renderer rend = new Renderer(size.width, size.height);
         GameLoop gl = new GameLoop(game, rend, new Display());
-        game.setLevelMap(new LevelMap("Maze1.txt"));
+        game.setLevelMap(new LevelMap("Maze2.txt"));
         game.setPlayer(new Player(
         	game.getLevelMap().getLocX()+0.5,
         	game.getLevelMap().getLocY()+0.5,

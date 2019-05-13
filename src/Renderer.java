@@ -185,8 +185,8 @@ public class Renderer {
         g.setColor(Color.GRAY);
         g.drawString(""+game.getFPS().getFPS()+" FPS", 50, 25);
         g.drawString(String.format("XY: %.2f / %.2f", posX, posY), 50, 50);
-        long memUsage = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        g.drawString("Memory usage: " + (memUsage >> 10) + " Kb", 50, 75);
+        // long memUsage = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        // g.drawString("Memory usage: " + (memUsage >> 10) + " Kb", 50, 75);
         
         // draw the menu
         if (inMenu) {
@@ -283,7 +283,8 @@ public class Renderer {
             g.setFont(g.getFont().deriveFont(Font.BOLD, 0.0375f*width));
             fm = g.getFontMetrics();
             g.drawString(txt2, (width-fm.stringWidth(txt2))/2, (height*3/4));
-	        
+	        AudioLibrary.getAudioLibrary().play(victory?"victory":"failure");
+            AudioLibrary.getAudioLibrary().setDisabled(true);
 	        if (ks.isDown(KeyEvent.VK_ESCAPE)) return true;
         }
         
@@ -362,7 +363,6 @@ public class Renderer {
     public void setGameOver() {
     	gameOver = true;
     	KeyState.getKeyState().purge();
-        AudioLibrary.getAudioLibrary().setDisabled(true);
     }
     
     /**

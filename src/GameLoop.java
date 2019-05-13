@@ -177,7 +177,7 @@ public class GameLoop {
     /**
      * Handles camera rotation due to mouse movements and gun shots
      */
-    public void handleMouse() {
+    private void handleMouse() {
         Player p = state.getPlayer();
         
         if (mouseState.hasFired()) p.getWeapon().fire(this);
@@ -192,7 +192,7 @@ public class GameLoop {
     /**
      * Checks whether repeated events should be requeued this frame
      */
-    public void handleRepeatedEvents() {
+    private void handleRepeatedEvents() {
     	for (GameEvent ge : registeredEvents.keySet()) {
     		if (frameNumber % registeredEvents.get(ge) == 0) {
     			queueEvent(ge);
@@ -203,7 +203,7 @@ public class GameLoop {
     /**
      * Checks whether future events should be queued this frame
      */
-    public void handleFutureEvents() {
+    private void handleFutureEvents() {
     	for (GameEvent ge : futureEvents.keySet()) {
     		if (frameNumber == futureEvents.get(ge)) {
     			queueEvent(ge);
@@ -229,6 +229,14 @@ public class GameLoop {
     }
     
     /**
+     * Called by the treasure when the level is completed   
+     */
+    public void levelCompleted() {
+        rend.setVictory(true);
+        rend.setGameOver();
+    }
+    
+    /**
      * Delays for a given amount of ms
      * @param ms the given amount of ms
      */
@@ -238,11 +246,3 @@ public class GameLoop {
         } catch (InterruptedException e) {}
     }
 }
-
-
-
-
-
-
-
-

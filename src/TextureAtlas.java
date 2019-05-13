@@ -14,7 +14,6 @@ public class TextureAtlas {
 	// should be loaded in from a file!
 	private HashMap<String, Image> map;
 	
-	private static final String textureDir = "textures";
 	private static final String indexPath = "index.dat";
 	
 	private static TextureAtlas ta;

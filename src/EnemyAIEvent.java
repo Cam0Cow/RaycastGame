@@ -6,7 +6,7 @@ import java.time.*;
  */
 public class EnemyAIEvent extends GameEvent {
 	
-	Entity ent;
+	private Entity ent;
 	
 	/**
 	 * Constructs a new enemy AI for a given entity

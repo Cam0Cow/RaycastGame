@@ -39,7 +39,7 @@ public class Treasure implements Entity {
      * @param state the current game state  
      */
 	public void registerEntity(GameState state) {
-		// TODO
+		state.getGameLoop().registerRepeatedEvent(new TreasureAIEvent(this), 20);
 	}
 
 	/**

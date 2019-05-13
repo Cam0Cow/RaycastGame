@@ -17,11 +17,11 @@ public class Renderer {
     private boolean inHelp;
     private boolean inBackstory;
     private boolean gameOver;
+    private boolean victory;
     private double[] wallDistances;
     private int width, height;
     public static final double FOV = 0.9;
     public static final Dimension HEALTH_BAR_SIZE = new Dimension(200,30);
-    public static final long MENU_TIME_DELAY = 70; // in ms
     
     /**
      * Creates a new renderer with a given width and height
@@ -39,6 +39,7 @@ public class Renderer {
         inHelp = false;
         inBackstory = false;
         gameOver = false;
+        victory = false;
         state = null;
     }
     
@@ -218,11 +219,12 @@ public class Renderer {
 	        	}
 	        } else if (inBackstory) {
 	        	LinkedList<String> options = new LinkedList<String>();
+                options.add("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		        options.add("You must find the treasure and escape the maze");
 		        options.add("The radioactive guards will try to stop you");
 		        options.add("Let no one be between you and the booty");
 		        options.add("Try not to die");
-		        options.add("The booty beckons");
+		        options.add("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		        int d = height / (options.size()+1);
 		        for (int i=1; i<=options.size(); i++) {
 		        	int sWidth = fm.stringWidth(options.get(i-1));
@@ -268,20 +270,21 @@ public class Renderer {
         }
         
         if (gameOver) {
-            /*
-            RescaleOp ro = new RescaleOp(new float[] {-1.0f, -1.0f, -1.0f, 0.1f}, new float[] {0.0f, 0.0f, 0.0f, 0.0f}, null);
-            surface = ro.filter(surface, null);
-            System.out.println("stuff");*/
-        	
+            game.getMusicPlayer().pause();
             KeyState ks = KeyState.getKeyState();
         	g.setBackground(Color.BLACK);
-        	//g.clearRect(0,0,width,height);
-	        g.setColor(Color.RED);
-	        g.setFont(g.getFont().deriveFont(Font.BOLD, 144.0f));
+        	g.clearRect(0,0,width,height);
+	        g.setColor(victory?Color.GREEN:Color.RED);
+	        g.setFont(g.getFont().deriveFont(Font.BOLD, 0.075f*width));
 	        FontMetrics fm = g.getFontMetrics();
-	        g.drawString("GAME OVER", (width-fm.stringWidth("GAME OVER"))/2, (height-fm.getAscent())/2);
+            String txt  = victory ? "Level Cleared" : "GAME OVER";
+            String txt2 = "Press Esc to exit game";
+	        g.drawString(txt, (width-fm.stringWidth(txt))/2, (height-fm.getAscent())/2);
+            g.setFont(g.getFont().deriveFont(Font.BOLD, 0.0375f*width));
+            fm = g.getFontMetrics();
+            g.drawString(txt2, (width-fm.stringWidth(txt2))/2, (height*3/4));
 	        
-	        if (ks.getNumKeysDown() > 0) return true;
+	        if (ks.isDown(KeyEvent.VK_ESCAPE)) return true;
         }
         
         surface = back; // for double buffering
@@ -335,24 +338,6 @@ public class Renderer {
     }
     
     /**
-     * Draws text with a white background
-     * @param g the graphics context
-     * @param txt the text to display
-     * @param x the x coordinate to draw at
-     * @param y the y coordinate to draw at
-     */
-    public static void drawText(Graphics2D g, String txt, int x, int y) {
-    	FontMetrics info = g.getFontMetrics();
-    	int width = info.stringWidth(txt);
-    	int height = info.getHeight();
-    	Color c = g.getColor();
-    	g.setColor(Color.WHITE);
-    	g.fillRect(x, y, width, height);
-    	g.setColor(c);
-    	g.drawString(txt, x, y);
-    }
-    
-    /**
      * Toggles the menu
      */
     public void toggleMenu() {
@@ -377,5 +362,13 @@ public class Renderer {
     public void setGameOver() {
     	gameOver = true;
     	KeyState.getKeyState().purge();
+    }
+    
+    /**
+     * Sets whether the player has won or lost
+     * @param v whether the player has won or lost
+     */
+    public void setVictory(boolean v) {
+        victory = v;
     }
 }

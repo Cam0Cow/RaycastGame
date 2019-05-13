@@ -30,7 +30,6 @@ public class MusicPlayer {
             BufferedInputStream bis = new BufferedInputStream(getClass().getClassLoader().getResourceAsStream(FILENAME));
             ais = AudioSystem.getAudioInputStream(bis);
             clip = AudioSystem.getClip();
-            //clip.loop(Clip.LOOP_CONTINUOUSLY);
             clip.open(ais);
         } catch (Exception e) {
             e.printStackTrace();

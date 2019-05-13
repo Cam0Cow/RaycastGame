@@ -5,8 +5,8 @@ import java.util.*;
  */
 public class FPS {
 	
-	public Queue<Long> frames;
-	public long total;
+	private Queue<Long> frames;
+	private long total;
 	
 	private static final int QUEUE_SIZE = 60;
 	

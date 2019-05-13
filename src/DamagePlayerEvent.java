@@ -1,3 +1,9 @@
+/*
+ * Roie Gal
+ * 2019-5-13
+ * Raycast Game
+ */
+
 import java.time.*;
 import java.util.*;
 

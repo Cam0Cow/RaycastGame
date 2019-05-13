@@ -1,3 +1,8 @@
+/*
+ * Roie Gal
+ * 2019-5-13
+ * Raycast Game
+ */
 
 /**
  * Represents an object that can be animated on the screen

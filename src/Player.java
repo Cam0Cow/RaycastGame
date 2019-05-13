@@ -1,3 +1,8 @@
+/*
+ * Roie Gal
+ * 2019-5-13
+ * Raycast Game
+ */
 
 /**
  * Represents the player

@@ -1,4 +1,8 @@
-
+/*
+ * Roie Gal
+ * 2019-5-13
+ * Raycast Game
+ */
 
 /**
  * Represents the state of the game at any given time

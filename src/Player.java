@@ -129,6 +129,7 @@ public class Player {
      */
     public void damage(int damage) {
     	health -= damage;
+        AudioLibrary.getAudioLibrary().play("hurt");
     }
     
     /**

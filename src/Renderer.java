@@ -362,6 +362,7 @@ public class Renderer {
     public void setGameOver() {
     	gameOver = true;
     	KeyState.getKeyState().purge();
+        AudioLibrary.getAudioLibrary().setDisabled(true);
     }
     
     /**

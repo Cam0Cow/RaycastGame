@@ -22,7 +22,7 @@ public class TreasureAIEvent extends GameEvent {
      */
     public void handle(GameState state, Duration dt) {
         Player p = state.getPlayer();
-        if (t.getDistance(p) < 0.2) {
+        if (t.getDistance(p) < 0.5) {
             state.getGameLoop().levelCompleted();
         }
     }

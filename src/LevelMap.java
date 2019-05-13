@@ -38,7 +38,7 @@ public class LevelMap {
         if (sc.hasNextLine()) sc.nextLine(); // skip whitespace
         while (sc.hasNextLine()) {
         	String[] ss = sc.nextLine().split("\\s+"); // check
-        	entities.add(translate(ss[0], Double.parseDouble(ss[1]), Double.parseDouble(ss[2])));
+        	entities.add(translate(ss[0], Double.parseDouble(ss[1])+0.5, Double.parseDouble(ss[2])+0.5));
         }
     }
     

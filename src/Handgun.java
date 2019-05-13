@@ -40,6 +40,7 @@ public class Handgun implements Weapon, Animatable {
 			loop.queueEvent(new BulletEvent());
 			loop.registerFutureEvent(new AnimationUpdateEvent(this), 5);
 			loop.registerFutureEvent(new WeaponCooldownEvent(this), 20);
+            AudioLibrary.getAudioLibrary().play("handgun");
 		}
 	}
 	

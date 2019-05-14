@@ -95,7 +95,7 @@ public class GameLoop {
 	            handleMouse();
 	            handleFutureEvents();
 	            handleRepeatedEvents();
-				while (!queue.isEmpty() && !disp.isFrameDone()) {
+				while (!queue.isEmpty()) {
 					// System.out.println (queue.peek());
 					queue.poll().handle(state, dt);
 				}

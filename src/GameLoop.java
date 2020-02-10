@@ -16,7 +16,7 @@ public class GameLoop {
 	private GameState state;
 	private MouseState mouseState;
 	private Renderer rend;
-    private Display disp;
+	private Display disp;
 	private PriorityQueue<GameEvent> queue;
 	private ConcurrentMap<GameEvent, Integer> registeredEvents;
 	private ConcurrentMap<GameEvent, Long> futureEvents;
@@ -33,9 +33,9 @@ public class GameLoop {
 		state = gs;
 		state.registerGameLoop(this);
 		rend = r;
-        disp = d;
-        mouseState = new MouseState(d.getSize());
-        d.setMouseState(mouseState);
+		disp = d;
+		mouseState = new MouseState(d.getSize());
+		d.setMouseState(mouseState);
 		queue = new PriorityQueue<GameEvent>();
 		registeredEvents = new ConcurrentMap<GameEvent, Integer>();
 		futureEvents = new ConcurrentMap<GameEvent, Long>();
@@ -91,10 +91,10 @@ public class GameLoop {
 				Duration dt = Duration.between(previousFrame, now);
 				previousFrame = now;
 				state.getFPS().addFrame(dt.toMillis());
-	            handleKeys(dt);
-	            handleMouse();
-	            handleFutureEvents();
-	            handleRepeatedEvents();
+				handleKeys(dt);
+				handleMouse();
+				handleFutureEvents();
+				handleRepeatedEvents();
 				while (!queue.isEmpty()) {
 					// System.out.println (queue.peek());
 					queue.poll().handle(state, dt);

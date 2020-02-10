@@ -39,7 +39,9 @@ public class AudioLibrary {
         if (!disabled) {
             String filename = sound+".wav";
             try {
-                BufferedInputStream bis = new BufferedInputStream(getClass().getClassLoader().getResourceAsStream(filename));
+                BufferedInputStream bis = new BufferedInputStream(
+					getClass().getClassLoader().getResourceAsStream(filename));
+				
                 AudioInputStream ais = AudioSystem.getAudioInputStream(bis);
                 Clip clip = AudioSystem.getClip();
                 clip.open(ais);

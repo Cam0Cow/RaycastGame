@@ -11,7 +11,7 @@ import java.util.*;
  * Represents damage delt to the player
  */
 public class DamagePlayerEvent extends GameEvent {
-	
+    
     private Entity e;
     
     /**
@@ -27,8 +27,8 @@ public class DamagePlayerEvent extends GameEvent {
      * @param state the current game state
      * @param dt the frame time
      */
-	public void handle(GameState state, Duration dt) {
-		Player p = state.getPlayer();
-	    if (e.getDistance(p) < 1.1) p.damage(1);
-	}
+    public void handle(GameState state, Duration dt) {
+        Player p = state.getPlayer();
+        if (e.getDistance(p) < 1.1) p.damage(1);
+    }
 }

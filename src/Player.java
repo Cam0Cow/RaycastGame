@@ -85,7 +85,7 @@ public class Player {
      * @param x the new x position
      */
     public void setPosX(double x) {
-    	posX = x;
+        posX = x;
     }
     
     /**
@@ -93,7 +93,7 @@ public class Player {
      * @param y the new y position
      */
     public void setPosY(double y) {
-    	posY = y;
+        posY = y;
     }
     
     /**
@@ -101,7 +101,7 @@ public class Player {
      * @param x the new x direction
      */
     public void setDirX(double x) {
-    	dirX = x;
+        dirX = x;
     }
     
     /**
@@ -109,7 +109,7 @@ public class Player {
      * @param y the new y direction
      */
     public void setDirY(double y) {
-    	dirY = y;
+        dirY = y;
     }
     
     /**
@@ -125,7 +125,7 @@ public class Player {
      * @return the current weapon
      */
     public Weapon getWeapon() {
-    	return weapon;
+        return weapon;
     }
     
     /**
@@ -133,7 +133,7 @@ public class Player {
      * @param damage the amount of health points to take away
      */
     public void damage(int damage) {
-    	health -= damage;
+        health -= damage;
         AudioLibrary.getAudioLibrary().play("hurt");
     }
     
@@ -142,7 +142,7 @@ public class Player {
      * @return whether the player is dead
      */
     public boolean isDead() {
-    	return health <= 0;
+        return health <= 0;
     }
     
     /**
@@ -150,6 +150,6 @@ public class Player {
      * @return the player's health
      */
     public int getHealth() {
-    	return health;
+        return health;
     }
 }

@@ -36,15 +36,15 @@ public class LevelMap {
         entities = new HashSet<Entity>();
         map = new MapTile[height][width];
         for (int i=0; i<height; i++) {
-        	String line = sc.nextLine();
+            String line = sc.nextLine();
             for (int j=0; j<width; j++) {
                 map[i][j] = MapTile.fromInt(translate(line.charAt(j)));
             }
         }
         if (sc.hasNextLine()) sc.nextLine(); // skip whitespace
         while (sc.hasNextLine()) {
-        	String[] ss = sc.nextLine().split("\\s+"); // check
-        	entities.add(translate(ss[0], Double.parseDouble(ss[1])+0.5, Double.parseDouble(ss[2])+0.5));
+            String[] ss = sc.nextLine().split("\\s+"); // check
+            entities.add(translate(ss[0], Double.parseDouble(ss[1])+0.5, Double.parseDouble(ss[2])+0.5));
         }
     }
     
@@ -85,7 +85,7 @@ public class LevelMap {
      * @return the set of all entities
      */
     public HashSet<Entity> getEntities() {
-    	return entities;
+        return entities;
     }
     
     /**
@@ -94,15 +94,15 @@ public class LevelMap {
      * @return the tile index
      */
     private int translate(char c) {
-    	if (Character.isDigit(c)) {
-    		return c - '0';
-    	} else if (Character.isLowerCase(c)) {
-    		return c - 'a' + 10;
-    	} else if (Character.isUpperCase(c)) {
-    		return c - 'A' + 36;
-    	} else {
-    		return 0;
-    	}
+        if (Character.isDigit(c)) {
+            return c - '0';
+        } else if (Character.isLowerCase(c)) {
+            return c - 'a' + 10;
+        } else if (Character.isUpperCase(c)) {
+            return c - 'A' + 36;
+        } else {
+            return 0;
+        }
     }
     
     /**
@@ -112,11 +112,11 @@ public class LevelMap {
      * @param y the y coordinate
      */
     private Entity translate(String name, double x, double y) {
-    	switch (name) {
-    		case "Monster": return new Monster(x,y);
+        switch (name) {
+            case "Monster": return new Monster(x,y);
             case "Treasure": return new Treasure(x,y);
-    		default: return null;
-    	}
+            default: return null;
+        }
     }
     
     /**
@@ -124,7 +124,7 @@ public class LevelMap {
      * @return the starting y coordinate
      */
     public int getLocX() {
-    	return locX;
+        return locX;
     }
     
     /**
@@ -132,6 +132,6 @@ public class LevelMap {
      * @return the starting y coordinate
      */
     public int getLocY() {
-    	return locY;
+        return locY;
     }
 }

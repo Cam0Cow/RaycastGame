@@ -19,9 +19,9 @@ public enum MapTile {
     
     private static final MapTile[] indices = MapTile.values();
     private static final Color[] colors = {
-    	Color.GREEN,
-    	Color.RED,
-    	Color.BLUE,
+        Color.GREEN,
+        Color.RED,
+        Color.BLUE,
         Color.YELLOW,
         Color.ORANGE
     };
@@ -41,6 +41,6 @@ public enum MapTile {
      * @return the wall color
      */
     public static Color getColor(MapTile mt) {
-    	return colors[mt.ordinal()-1];
+        return colors[mt.ordinal()-1];
     }
 }

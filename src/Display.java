@@ -25,7 +25,7 @@ public class Display extends JFrame implements ImageObserver {
         setUndecorated(true);
         GraphicsEnvironment.getLocalGraphicsEnvironment()
             .getScreenDevices()[0].setFullScreenWindow(this);
-		
+        
         setCursor(getToolkit().createCustomCursor(
             new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB)
                 ,new Point(), null));

@@ -22,7 +22,7 @@ public class KeyState implements KeyListener {
 	 * Constructs a new keyState
 	 */
     private KeyState() {
-    	queue = new ConcurrentLinkedQueue<KeyStateChangedEvent>();
+		queue = new ConcurrentLinkedQueue<KeyStateChangedEvent>();
         keysDown = new HashSet<Integer>();
         ref = this;
     }
@@ -41,7 +41,7 @@ public class KeyState implements KeyListener {
      * @return an iterator for the keys that are pressed 
      */
     public Iterator<Integer> iterator() {
-    	flushQueue();
+		flushQueue();
         return keysDown.iterator();
     }
 	
@@ -51,7 +51,7 @@ public class KeyState implements KeyListener {
 	 * @return whether the key is pressed
 	 */
     public boolean isDown(Integer key) {
-    	flushQueue();
+		flushQueue();
         return keysDown.contains(key);
     }
 	
@@ -76,22 +76,22 @@ public class KeyState implements KeyListener {
      * to be as up-to-date as possible
      */
     private void flushQueue() {
-    	while (!queue.isEmpty()) {
-    		KeyStateChangedEvent ksce = queue.poll();
-    		if (ksce.isDown()) {
-    			keysDown.add(ksce.getKeyCode());
-    		} else {
-    			keysDown.remove(ksce.getKeyCode());
-    		}
-    	}
+		while (!queue.isEmpty()) {
+			KeyStateChangedEvent ksce = queue.poll();
+			if (ksce.isDown()) {
+				keysDown.add(ksce.getKeyCode());
+			} else {
+				keysDown.remove(ksce.getKeyCode());
+			}
+		}
     }
     
     /**
      * Return the number of keys being held down
      */
     public int getNumKeysDown() {
-    	flushQueue();
-    	return keysDown.size();
+		flushQueue();
+		return keysDown.size();
     }
     
     /**
@@ -99,8 +99,8 @@ public class KeyState implements KeyListener {
      * with the keyState. Useful for context switches (i.e. between menus)
      */
     public void purge() {
-    	keysDown.clear();
-    	queue.clear();
+		keysDown.clear();
+		queue.clear();
     }
 	
 	/**
@@ -113,34 +113,34 @@ public class KeyState implements KeyListener {
      * Represents a state change of a key
      */
     private static class KeyStateChangedEvent {
-    	
-    	private int keyCode;
-    	private boolean isDown;
-    	
-    	/**
-    	 * Constructs a new state change for a given key
-    	 * @param k the key code
-    	 * @param d whether the key is down 
-    	 */
-    	public KeyStateChangedEvent(int k, boolean d) {
-    		keyCode = k;
-    		isDown = d;
-    	}
-    	
-    	/**
-    	 * Returns the key code
-    	 * @return the key code
-    	 */
-    	public int getKeyCode() {
-    		return keyCode;
-    	}
-    	
-    	/**
-    	 * Returns whether the key is down
-    	 * @return whether the key is down
-    	 */
-    	public boolean isDown() {
-    		return isDown;
-    	}
+		
+		private int keyCode;
+		private boolean isDown;
+		
+		/**
+		 * Constructs a new state change for a given key
+		 * @param k the key code
+		 * @param d whether the key is down 
+		 */
+		public KeyStateChangedEvent(int k, boolean d) {
+			keyCode = k;
+			isDown = d;
+		}
+		
+		/**
+		 * Returns the key code
+		 * @return the key code
+		 */
+		public int getKeyCode() {
+			return keyCode;
+		}
+		
+		/**
+		 * Returns whether the key is down
+		 * @return whether the key is down
+		 */
+		public boolean isDown() {
+			return isDown;
+		}
     }
 }

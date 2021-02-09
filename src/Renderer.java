@@ -54,7 +54,7 @@ public class Renderer {
      * @param game the current GameState
      */
     public boolean render(GameState game) {
-    	state = game;
+		state = game;
         Graphics2D g = back.createGraphics();
         g.setBackground(new Color(130, 171, 237));
         g.clearRect(0,0,width,height/2);
@@ -138,40 +138,40 @@ public class Renderer {
         double spanScale = width/2/Math.acos(edgeView); // defines how fast the enemies turn out of view
         // g.drawString("view edge: "+edgeView, 50, 50);
         for (Entity e : entities) {
-        	// game.getGameLoop().queueEvent(new EnemyAIEvent(e));
-        	double enemyX = e.getX() - posX;
-        	double enemyY = e.getY() - posY;
-        	double enemyDistance = e.getDistance(p);
-        	double enemyView = (dirX*enemyX + dirY*enemyY)/(Math.sqrt(dirX2+dirY2)*Math.sqrt(enemyX*enemyX+enemyY*enemyY));
-        	double enemyAngle = Math.acos(enemyView);
-        	double enemySideBias = Math.sin(e.getWidth()/width*FOV/enemyDistance/2);
-        	// g.drawString("view enemy: "+enemyView, 50, 100);
-        	// g.drawString("enemy side bias: "+enemySideBias, 50, 75);
-        	if (enemyView+enemySideBias > edgeView) { // or is it 1 - edgeView?
-        		// g.setColor(Color.GREEN);
-        		if (dirX*enemyY-enemyX*dirY < 0) enemyAngle = -enemyAngle;
-        		BufferedImage tex = toBuf(e.getUnclippedTexture(p));
-        		int xwd = tex.getWidth(null);
-        		int yht = tex.getHeight(null);
-        		int xLeft = (int)(width/2+enemyAngle*spanScale);
-        		int yTop  = (height-yht)/2;
-        		boolean show = true;
-        		// if there's a wall in front and to the left of the enemy,
-        		// clip the left side, otherwise, the right side
-        		if (xLeft > 0 && xLeft < width && wallDistances[xLeft] < enemyDistance) {
-        			int clipLeft = 0;
-        			while (xLeft < width-1 && wallDistances[++xLeft] < enemyDistance && clipLeft < xwd) clipLeft++;
-        			show = (clipLeft != xwd);
-        			if (show) tex = tex.getSubimage(clipLeft, 0, xwd-clipLeft, yht);
-        		} else if (xLeft+xwd > 0 && xLeft+xwd < width && wallDistances[xLeft+xwd] < enemyDistance){
-        			while (--xwd > 0 && xLeft+xwd < width && xLeft+xwd > 0 && wallDistances[xLeft+xwd] < enemyDistance);
-        			show = (xwd != 0);
-        			if (show) tex =  tex.getSubimage(0, 0, xwd, yht);
-        		}
-        		
-        		if (show) g.drawImage(tex, xLeft, yTop, null);
-        	}
-        	// g.drawString("If Green, enemy should be visible", 50, 150);
+			// game.getGameLoop().queueEvent(new EnemyAIEvent(e));
+			double enemyX = e.getX() - posX;
+			double enemyY = e.getY() - posY;
+			double enemyDistance = e.getDistance(p);
+			double enemyView = (dirX*enemyX + dirY*enemyY)/(Math.sqrt(dirX2+dirY2)*Math.sqrt(enemyX*enemyX+enemyY*enemyY));
+			double enemyAngle = Math.acos(enemyView);
+			double enemySideBias = Math.sin(e.getWidth()/width*FOV/enemyDistance/2);
+			// g.drawString("view enemy: "+enemyView, 50, 100);
+			// g.drawString("enemy side bias: "+enemySideBias, 50, 75);
+			if (enemyView+enemySideBias > edgeView) { // or is it 1 - edgeView?
+				// g.setColor(Color.GREEN);
+				if (dirX*enemyY-enemyX*dirY < 0) enemyAngle = -enemyAngle;
+				BufferedImage tex = toBuf(e.getUnclippedTexture(p));
+				int xwd = tex.getWidth(null);
+				int yht = tex.getHeight(null);
+				int xLeft = (int)(width/2+enemyAngle*spanScale);
+				int yTop  = (height-yht)/2;
+				boolean show = true;
+				// if there's a wall in front and to the left of the enemy,
+				// clip the left side, otherwise, the right side
+				if (xLeft > 0 && xLeft < width && wallDistances[xLeft] < enemyDistance) {
+					int clipLeft = 0;
+					while (xLeft < width-1 && wallDistances[++xLeft] < enemyDistance && clipLeft < xwd) clipLeft++;
+					show = (clipLeft != xwd);
+					if (show) tex = tex.getSubimage(clipLeft, 0, xwd-clipLeft, yht);
+				} else if (xLeft+xwd > 0 && xLeft+xwd < width && wallDistances[xLeft+xwd] < enemyDistance){
+					while (--xwd > 0 && xLeft+xwd < width && xLeft+xwd > 0 && wallDistances[xLeft+xwd] < enemyDistance);
+					show = (xwd != 0);
+					if (show) tex =  tex.getSubimage(0, 0, xwd, yht);
+				}
+				
+				if (show) g.drawImage(tex, xLeft, yTop, null);
+			}
+			// g.drawString("If Green, enemy should be visible", 50, 150);
         }
         
         // draw weapon to screen
@@ -196,102 +196,102 @@ public class Renderer {
         
         // draw the menu
         if (inMenu) {
-        	KeyState ks = KeyState.getKeyState();
-        	g.setBackground(Color.BLACK);
-        	g.clearRect(0,0,width,height);
-	        g.setColor(Color.RED);
-	        g.setFont(g.getFont().deriveFont(Font.BOLD, 0.0375f*width));
-	        FontMetrics fm = g.getFontMetrics();
-	        
-	        // draw the help screen if requested
-	        if (inHelp) {
-	        	LinkedList<String> options = new LinkedList<String>();
-		        options.add("Use WASD to move forwards, to the left,");
-		        options.add("backwards, and to the right, respectively.");
-		        options.add("Use the mouse or arrow keys to look left and right");
-		        options.add("Shoot the enemies by left clicking with the mouse");
-		        options.add("If the enemies get too close, they will damage you!");
-		        int d = height / (options.size()+1);
-		        for (int i=1; i<=options.size(); i++) {
-		        	int sWidth = fm.stringWidth(options.get(i-1));
-		        	int x = (width-sWidth)/2;
-		        	int y = d*i;
-		        	g.drawString(options.get(i-1), x, y);
-		        }
-		        
-	        	if (ks.isDown(KeyEvent.VK_ESCAPE)) {
-	        		inHelp = false;
-	        		ks.purge();
-	        	}
-	        } else if (inBackstory) {
-	        	LinkedList<String> options = new LinkedList<String>();
+			KeyState ks = KeyState.getKeyState();
+			g.setBackground(Color.BLACK);
+			g.clearRect(0,0,width,height);
+			g.setColor(Color.RED);
+			g.setFont(g.getFont().deriveFont(Font.BOLD, 0.0375f*width));
+			FontMetrics fm = g.getFontMetrics();
+			
+			// draw the help screen if requested
+			if (inHelp) {
+				LinkedList<String> options = new LinkedList<String>();
+				options.add("Use WASD to move forwards, to the left,");
+				options.add("backwards, and to the right, respectively.");
+				options.add("Use the mouse or arrow keys to look left and right");
+				options.add("Shoot the enemies by left clicking with the mouse");
+				options.add("If the enemies get too close, they will damage you!");
+				int d = height / (options.size()+1);
+				for (int i=1; i<=options.size(); i++) {
+					int sWidth = fm.stringWidth(options.get(i-1));
+					int x = (width-sWidth)/2;
+					int y = d*i;
+					g.drawString(options.get(i-1), x, y);
+				}
+				
+				if (ks.isDown(KeyEvent.VK_ESCAPE)) {
+					inHelp = false;
+					ks.purge();
+				}
+			} else if (inBackstory) {
+				LinkedList<String> options = new LinkedList<String>();
                 options.add("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		        options.add("You must find the treasure and escape the maze");
-		        options.add("The radioactive guards will try to stop you");
-		        options.add("Let no one be between you and the booty");
-		        options.add("Try not to die");
-		        options.add("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		        int d = height / (options.size()+1);
-		        for (int i=1; i<=options.size(); i++) {
-		        	int sWidth = fm.stringWidth(options.get(i-1));
-		        	int x = (width-sWidth)/2;
-		        	int y = d*i;
-		        	g.drawString(options.get(i-1), x, y);
-		        }
-		        
-		        if (ks.isDown(KeyEvent.VK_ESCAPE)) {
-		        	inBackstory = false;
-		        	ks.purge();
-		        }
-	        } else {
-		        LinkedList<String> options = new LinkedList<String>();
-		        options.add("Press Esc to "+(initialMenu?"begin":"resume")+" Game");
-		        options.add("Press B for Backstory");
-		        options.add("Press H for Help");
-		        options.add("Press Q to Quit");
-		        int d = height / (options.size()+1);
-		        for (int i=1; i<=options.size(); i++) {
-		        	int sWidth = fm.stringWidth(options.get(i-1));
-		        	int x = (width-sWidth)/2;
-		        	int y = d*i;
-		        	g.drawString(options.get(i-1), x, y);
-		        }
-		        if (ks.isDown(KeyEvent.VK_ESCAPE)) {
-		        	inMenu = false;
-		        	ks.purge();
-		        	game.getGameLoop().getMouseState().unfreeze();
+				options.add("You must find the treasure and escape the maze");
+				options.add("The radioactive guards will try to stop you");
+				options.add("Let no one be between you and the booty");
+				options.add("Try not to die");
+				options.add("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+				int d = height / (options.size()+1);
+				for (int i=1; i<=options.size(); i++) {
+					int sWidth = fm.stringWidth(options.get(i-1));
+					int x = (width-sWidth)/2;
+					int y = d*i;
+					g.drawString(options.get(i-1), x, y);
+				}
+				
+				if (ks.isDown(KeyEvent.VK_ESCAPE)) {
+					inBackstory = false;
+					ks.purge();
+				}
+			} else {
+				LinkedList<String> options = new LinkedList<String>();
+				options.add("Press Esc to "+(initialMenu?"begin":"resume")+" Game");
+				options.add("Press B for Backstory");
+				options.add("Press H for Help");
+				options.add("Press Q to Quit");
+				int d = height / (options.size()+1);
+				for (int i=1; i<=options.size(); i++) {
+					int sWidth = fm.stringWidth(options.get(i-1));
+					int x = (width-sWidth)/2;
+					int y = d*i;
+					g.drawString(options.get(i-1), x, y);
+				}
+				if (ks.isDown(KeyEvent.VK_ESCAPE)) {
+					inMenu = false;
+					ks.purge();
+					game.getGameLoop().getMouseState().unfreeze();
                     game.getMusicPlayer().play();
                     initialMenu = false;
-		        }
-		        if (ks.isDown(KeyEvent.VK_H)) {
-		        	inHelp = true;
-		        	ks.purge();
-		        }
-		        if (ks.isDown(KeyEvent.VK_B)) {
-		        	inBackstory = true;
-		        	ks.purge();
-		        }
-		        if (ks.isDown(KeyEvent.VK_Q)) return true;
-	        }
+				}
+				if (ks.isDown(KeyEvent.VK_H)) {
+					inHelp = true;
+					ks.purge();
+				}
+				if (ks.isDown(KeyEvent.VK_B)) {
+					inBackstory = true;
+					ks.purge();
+				}
+				if (ks.isDown(KeyEvent.VK_Q)) return true;
+			}
         }
         
         if (gameOver) {
             game.getMusicPlayer().pause();
             KeyState ks = KeyState.getKeyState();
-        	g.setBackground(Color.BLACK);
-        	g.clearRect(0,0,width,height);
-	        g.setColor(victory?Color.GREEN:Color.RED);
-	        g.setFont(g.getFont().deriveFont(Font.BOLD, 0.075f*width));
-	        FontMetrics fm = g.getFontMetrics();
+			g.setBackground(Color.BLACK);
+			g.clearRect(0,0,width,height);
+			g.setColor(victory?Color.GREEN:Color.RED);
+			g.setFont(g.getFont().deriveFont(Font.BOLD, 0.075f*width));
+			FontMetrics fm = g.getFontMetrics();
             String txt  = victory ? "Level Cleared" : "GAME OVER";
             String txt2 = "Press Esc to exit game";
-	        g.drawString(txt, (width-fm.stringWidth(txt))/2, (height-fm.getAscent())/2);
+			g.drawString(txt, (width-fm.stringWidth(txt))/2, (height-fm.getAscent())/2);
             g.setFont(g.getFont().deriveFont(Font.BOLD, 0.0375f*width));
             fm = g.getFontMetrics();
             g.drawString(txt2, (width-fm.stringWidth(txt2))/2, (height*3/4));
-	        AudioLibrary.getAudioLibrary().play(victory?"victory":"failure");
+			AudioLibrary.getAudioLibrary().play(victory?"victory":"failure");
             AudioLibrary.getAudioLibrary().setDisabled(true);
-	        if (ks.isDown(KeyEvent.VK_ESCAPE)) return true;
+			if (ks.isDown(KeyEvent.VK_ESCAPE)) return true;
         }
         
         surface = back; // for double buffering
@@ -307,15 +307,15 @@ public class Renderer {
      * @return the converted buffered image
      */
     public static BufferedImage toBuf(Image img) {
-    	if (img instanceof BufferedImage) return (BufferedImage) img;
-    	BufferedImage bi = new BufferedImage(
-    		img.getWidth(null), img.getHeight(null), 
-    			BufferedImage.TYPE_INT_ARGB);
-    	
-    	Graphics g = bi.getGraphics();
-    	g.drawImage(img, 0, 0, null);
-    	g.dispose();
-    	return bi;
+		if (img instanceof BufferedImage) return (BufferedImage) img;
+		BufferedImage bi = new BufferedImage(
+			img.getWidth(null), img.getHeight(null), 
+				BufferedImage.TYPE_INT_ARGB);
+		
+		Graphics g = bi.getGraphics();
+		g.drawImage(img, 0, 0, null);
+		g.dispose();
+		return bi;
     }
     
     /**
@@ -341,17 +341,17 @@ public class Renderer {
      * @return the distance to the wall in front
      */
     public double getWallDistance() {
-    	return wallDistances[width/2];
+		return wallDistances[width/2];
     }
     
     /**
      * Toggles the menu
      */
     public void toggleMenu() {
-    	// GameLoop.delay(MENU_TIME_DELAY);
-    	inMenu = true;
-    	KeyState.getKeyState().purge();
-    	state.getGameLoop().getMouseState().freeze();
+		// GameLoop.delay(MENU_TIME_DELAY);
+		inMenu = true;
+		KeyState.getKeyState().purge();
+		state.getGameLoop().getMouseState().freeze();
         state.getMusicPlayer().pause();
     }
     
@@ -360,15 +360,15 @@ public class Renderer {
      * @return whether the game should be paused
      */
     public boolean isPaused() {
-    	return inMenu;
+		return inMenu;
     }
     
     /**
      * Called when the player dies
      */
     public void setGameOver() {
-    	gameOver = true;
-    	KeyState.getKeyState().purge();
+		gameOver = true;
+		KeyState.getKeyState().purge();
     }
     
     /**

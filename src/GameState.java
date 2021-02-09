@@ -60,7 +60,7 @@ public class GameState {
      * @param lm the new level
      */
     public void setLevelMap(LevelMap lm) {
-    	if (loop == null) throw new IllegalStateException("No game loop registered");
+		if (loop == null) throw new IllegalStateException("No game loop registered");
         levelMap = lm;
         for (Entity e : levelMap.getEntities()) e.registerEntity(this);
     }
@@ -71,10 +71,10 @@ public class GameState {
      * @param l the given game loop
      */
     public void registerGameLoop(GameLoop l) {
-    	if (loop != null)
-    		throw new IllegalStateException("Game loop already registered");
-    	else
-    		loop = l;
+		if (loop != null)
+			throw new IllegalStateException("Game loop already registered");
+		else
+			loop = l;
     }
     
     /**
@@ -82,7 +82,7 @@ public class GameState {
      * @return the registered game loop
      */
     public GameLoop getGameLoop() {
-    	return loop;
+		return loop;
     }
     
     /**
@@ -90,7 +90,7 @@ public class GameState {
      * @return the FPS object
      */
     public FPS getFPS() {
-    	return fps;
+		return fps;
     }
     
     /**

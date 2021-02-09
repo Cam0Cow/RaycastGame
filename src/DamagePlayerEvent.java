@@ -29,6 +29,6 @@ public class DamagePlayerEvent extends GameEvent {
      */
 	public void handle(GameState state, Duration dt) {
 		Player p = state.getPlayer();
-	    if (e.getDistance(p) < 1.1) p.damage(1);
+		if (e.getDistance(p) < 1.1) p.damage(1);
 	}
 }

@@ -114,68 +114,68 @@ public class GameLoop {
      * @param dt the last frame time
      */
     private void handleKeys(Duration dt) {
-    	int ms = (int) dt.toMillis();
+		int ms = (int) dt.toMillis();
         Iterator<Integer> keys = KeyState.getKeyState().iterator();
         Player p = state.getPlayer();
         MapTile[][] map = state.getLevelMap().getMap();
         while (keys.hasNext()) {
             switch (keys.next()) {
                 case KeyEvent.VK_ESCAPE: {
-                	rend.toggleMenu();
-                	break;
+					rend.toggleMenu();
+					break;
                 }
                 case KeyEvent.VK_W: {
-                	double xNew = p.getPosX()+p.getDirX()*ms/1000.0;
-                	double yNew = p.getPosY()+p.getDirY()*ms/1000.0;
-                	if (map[(int)p.getPosY()][(int)xNew] != MapTile.NOTHING) xNew = p.getPosX();
-                	if (map[(int)yNew][(int)p.getPosX()] != MapTile.NOTHING) yNew = p.getPosY();
-	    			p.setPosX(xNew);
-	    			p.setPosY(yNew);
-	    			break;
-    			}
-	    		case KeyEvent.VK_S: {
-	    			double xNew = p.getPosX()-p.getDirX()*ms/1000.0;
-                	double yNew = p.getPosY()-p.getDirY()*ms/1000.0;
-                	if (map[(int)p.getPosY()][(int)xNew] != MapTile.NOTHING) xNew = p.getPosX();
-                	if (map[(int)yNew][(int)p.getPosX()] != MapTile.NOTHING) yNew = p.getPosY();
-	    			p.setPosX(xNew);
-	    			p.setPosY(yNew);
-	    			break;
-	    		}
-	    		case KeyEvent.VK_D: {
-	    			double xNew = p.getPosX()-p.getDirY()*ms/1000.0;
-                	double yNew = p.getPosY()+p.getDirX()*ms/1000.0;
-                	if (map[(int)p.getPosY()][(int)xNew] != MapTile.NOTHING) xNew = p.getPosX();
-                	if (map[(int)yNew][(int)p.getPosX()] != MapTile.NOTHING) yNew = p.getPosY();
-	    			p.setPosX(xNew);
-	    			p.setPosY(yNew);
-	    			break;
-	    		}
-	    		case KeyEvent.VK_A: {
-	    			double xNew = p.getPosX()+p.getDirY()*ms/1000.0;
-                	double yNew = p.getPosY()-p.getDirX()*ms/1000.0;
-                	if (map[(int)p.getPosY()][(int)xNew] != MapTile.NOTHING) xNew = p.getPosX();
-                	if (map[(int)yNew][(int)p.getPosX()] != MapTile.NOTHING) yNew = p.getPosY();
-	    			p.setPosX(xNew);
-	    			p.setPosY(yNew);
-	    			break;
-	    		}
-	    		case KeyEvent.VK_RIGHT: {
-	    			double x = p.getDirX();
-	    			double y = p.getDirY();
-	    			double angle = Math.PI * ms / 2000;
-	    			p.setDirX(x*Math.cos(angle)-y*Math.sin(angle));
-	    			p.setDirY(x*Math.sin(angle)+y*Math.cos(angle));
-	    			break;
-	    		}
-	    		case KeyEvent.VK_LEFT: {
-	    			double x = p.getDirX();
-	    			double y = p.getDirY();
-	    			double angle = -Math.PI * ms / 2000;
-	    			p.setDirX(x*Math.cos(angle)-y*Math.sin(angle));
-	    			p.setDirY(x*Math.sin(angle)+y*Math.cos(angle));
-	    			break;
-	    		}
+					double xNew = p.getPosX()+p.getDirX()*ms/1000.0;
+					double yNew = p.getPosY()+p.getDirY()*ms/1000.0;
+					if (map[(int)p.getPosY()][(int)xNew] != MapTile.NOTHING) xNew = p.getPosX();
+					if (map[(int)yNew][(int)p.getPosX()] != MapTile.NOTHING) yNew = p.getPosY();
+					p.setPosX(xNew);
+					p.setPosY(yNew);
+					break;
+				}
+				case KeyEvent.VK_S: {
+					double xNew = p.getPosX()-p.getDirX()*ms/1000.0;
+					double yNew = p.getPosY()-p.getDirY()*ms/1000.0;
+					if (map[(int)p.getPosY()][(int)xNew] != MapTile.NOTHING) xNew = p.getPosX();
+					if (map[(int)yNew][(int)p.getPosX()] != MapTile.NOTHING) yNew = p.getPosY();
+					p.setPosX(xNew);
+					p.setPosY(yNew);
+					break;
+				}
+				case KeyEvent.VK_D: {
+					double xNew = p.getPosX()-p.getDirY()*ms/1000.0;
+					double yNew = p.getPosY()+p.getDirX()*ms/1000.0;
+					if (map[(int)p.getPosY()][(int)xNew] != MapTile.NOTHING) xNew = p.getPosX();
+					if (map[(int)yNew][(int)p.getPosX()] != MapTile.NOTHING) yNew = p.getPosY();
+					p.setPosX(xNew);
+					p.setPosY(yNew);
+					break;
+				}
+				case KeyEvent.VK_A: {
+					double xNew = p.getPosX()+p.getDirY()*ms/1000.0;
+					double yNew = p.getPosY()-p.getDirX()*ms/1000.0;
+					if (map[(int)p.getPosY()][(int)xNew] != MapTile.NOTHING) xNew = p.getPosX();
+					if (map[(int)yNew][(int)p.getPosX()] != MapTile.NOTHING) yNew = p.getPosY();
+					p.setPosX(xNew);
+					p.setPosY(yNew);
+					break;
+				}
+				case KeyEvent.VK_RIGHT: {
+					double x = p.getDirX();
+					double y = p.getDirY();
+					double angle = Math.PI * ms / 2000;
+					p.setDirX(x*Math.cos(angle)-y*Math.sin(angle));
+					p.setDirY(x*Math.sin(angle)+y*Math.cos(angle));
+					break;
+				}
+				case KeyEvent.VK_LEFT: {
+					double x = p.getDirX();
+					double y = p.getDirY();
+					double angle = -Math.PI * ms / 2000;
+					p.setDirX(x*Math.cos(angle)-y*Math.sin(angle));
+					p.setDirY(x*Math.sin(angle)+y*Math.cos(angle));
+					break;
+				}
             }
         }
     }
@@ -190,7 +190,7 @@ public class GameLoop {
         
         double x = p.getDirX();
         double y = p.getDirY();
-    	double angle = mouseState.getDeltaAngle();
+		double angle = mouseState.getDeltaAngle();
         p.setDirX(x*Math.cos(angle)-y*Math.sin(angle));
         p.setDirY(x*Math.sin(angle)+y*Math.cos(angle));
     }
@@ -199,23 +199,23 @@ public class GameLoop {
      * Checks whether repeated events should be requeued this frame
      */
     private void handleRepeatedEvents() {
-    	for (GameEvent ge : registeredEvents.keySet()) {
-    		if (frameNumber % registeredEvents.get(ge) == 0) {
-    			queueEvent(ge);
-    		}
-    	}
+		for (GameEvent ge : registeredEvents.keySet()) {
+			if (frameNumber % registeredEvents.get(ge) == 0) {
+				queueEvent(ge);
+			}
+		}
     }
     
     /**
      * Checks whether future events should be queued this frame
      */
     private void handleFutureEvents() {
-    	for (GameEvent ge : futureEvents.keySet()) {
-    		if (frameNumber == futureEvents.get(ge)) {
-    			queueEvent(ge);
-    			futureEvents.remove(ge);
-    		}
-    	}
+		for (GameEvent ge : futureEvents.keySet()) {
+			if (frameNumber == futureEvents.get(ge)) {
+				queueEvent(ge);
+				futureEvents.remove(ge);
+			}
+		}
     }
     
     /**
@@ -223,7 +223,7 @@ public class GameLoop {
      * @return the distance to the wall in front
      */
     public double getWallDistance() {
-    	return rend.getWallDistance();
+		return rend.getWallDistance();
     }
     
     /**
@@ -231,7 +231,7 @@ public class GameLoop {
      * @return the Game Loop's Mouse State
      */
     public MouseState getMouseState() {
-    	return mouseState;
+		return mouseState;
     }
     
     /**

@@ -137,7 +137,14 @@ public class Renderer {
         double edgeView = (dirX*eX+dirY*eY)/(Math.sqrt(dirX2+dirY2)*Math.sqrt(eX*eX+eY*eY)); // player . edge
         double spanScale = width/2/Math.acos(edgeView); // defines how fast the enemies turn out of view
         // g.drawString("view edge: "+edgeView, 50, 50);
-        for (Entity e : entities) {
+
+        // Sort the entities by distance before drawing them
+        Comparator<Pair<Entity, Double>> comp = (a, b) -> (int) ((b.u - a.u) * 1000);
+        PriorityQueue<Pair<Entity, Double>> drawOrder = new PriorityQueue<>(entities.size(), comp);
+        for (Entity e : entities) drawOrder.offer(new Pair<Entity, Double>(e, e.getDistance(p)));
+
+        while (!drawOrder.isEmpty()) {
+            Entity e = drawOrder.poll().t;
         	// game.getGameLoop().queueEvent(new EnemyAIEvent(e));
         	double enemyX = e.getX() - posX;
         	double enemyY = e.getY() - posY;

@@ -176,6 +176,10 @@ public class GameLoop {
 	    			p.setDirY(x*Math.sin(angle)+y*Math.cos(angle));
 	    			break;
 	    		}
+				case KeyEvent.VK_CONTROL: {
+					p.getWeapon().fire(this);
+					break;
+				}
             }
         }
     }
